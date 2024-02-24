@@ -63,7 +63,7 @@ awk -f /sdcard/rgbtools/awkrgb.awk -v c="1300,1!111,111!1000,140" -v sep="!"
 
 ```
 
-# get all RGB values of a region
+## get all RGB values of a region
 
 ```bash
 # This command executes the AWK script, specifying the coordinates x0=1, y0=1 as the start coordinates, and x1=100, y1=100 as the end coordinates.
