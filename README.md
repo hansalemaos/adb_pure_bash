@@ -2,17 +2,17 @@
 
 ## Fragment dump as CSV (Tab-separated values)
 
-```bash
+```sh
 sh /sdcard/activityparser/awkparser.sh
 ```
 ## Uiautomator dump as CSV (Tab-separated values)
-```bash
+```sh
 sh /sdcard/uidumpparser/u.sh
 ```
 
 ## localize elements
 
-```bash
+```sh
 sh /sdcard/uidumpparser/u.sh > /sdcard/u.txt
 awk -f /sdcard/awkloc/aloc.awk -v query="width>>300|height>>90|class~~view" -v sep="|" -v and=1 ./sdcard/u.txt
 # width >> 300: Selects rows where the value in the "width" column is greater than 300.
@@ -42,7 +42,7 @@ awk -f /sdcard/awkloc/aloc.awk -v query="CLASSNAME~~widget|HEIGHT>>90|VISIBILITY
 
 ## get RGB values 
 
-```bash
+```sh
 awk -f /sdcard/rgbtools/awkrgb.awk -v c="1300,1#111,111#1000,140" -v w=1600
 
 # Provide the -v c parameter to specify the coordinates to extract RGB values from. Coordinates should be in the format x,y, separated by #. Multiple coordinates can be provided, separated by #.
@@ -65,7 +65,7 @@ awk -f /sdcard/rgbtools/awkrgb.awk -v c="1300,1!111,111!1000,140" -v sep="!"
 
 ## get all RGB values of a region
 
-```bash
+```sh
 # This command executes the AWK script, specifying the coordinates x0=1, y0=1 as the start coordinates, and x1=100, y1=100 as the end coordinates.
 awk -f /sdcard/rgbtools/awkrgbregion.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100
 
@@ -75,7 +75,7 @@ awk -f /sdcard/rgbtools/awkrgbregion.awk -v x0=1 -v y0=1 -v x1=10 -v y1=10 -w 16
 ```
 
 ## get RGB mean of a region
-```bash
+```sh
 
 awk -f /sdcard/rgbtools/awkrgbmean.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100
 # This command executes the awkrgbmean.awk script.
