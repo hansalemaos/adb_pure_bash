@@ -18,7 +18,6 @@ function lstrip(str) {
     return str
 }
 function getPartOfRegion(start_x, start_y, end_x, end_y, screen_width) {
-    dumpdata = "/sdcard/dumpdata.tmp"
     color_depth_bytes = 4
     screenwidthtimescolordepth = screen_width * color_depth_bytes
     startabs = (start_x * color_depth_bytes) + 16
@@ -30,10 +29,10 @@ function getPartOfRegion(start_x, start_y, end_x, end_y, screen_width) {
         offset_start = start_y * screenwidthtimescolordepth
         offset_end = offset_start + readqty
         formatx ="'" readqty "/1 \"%03d,\"'"
-        comi="hexdump -n " readqty " -s " offset_start " -e " formatx " " dumpdata " > /sdcard/area_hexdump.tmp"
+        comi="hexdump -n " readqty " -s " offset_start " -e " formatx " " dumpdata " > "area_hexdumptmp
         system(comi)
-        getline area_hexdump < "/sdcard/area_hexdump.tmp"
-        close("/sdcard/area_hexdump.tmp")
+        getline area_hexdump < area_hexdumptmp
+        close(area_hexdumptmp)
         splitStringIntoChunks(area_hexdump, 16, chunkarray)
         counter = start_x
         for (i in chunkarray) {
@@ -53,16 +52,26 @@ function getPartOfRegion(start_x, start_y, end_x, end_y, screen_width) {
 }
 
 BEGIN {
+    mkcmd = "mktemp"
+    if ((mkcmd | getline area_hexdumptmp) > 0) {
+        close(mkcmd)
+    }
+    if ((mkcmd | getline dumpdata) > 0) {
+        close(mkcmd)
+    }
     if (! w){
+            if ((mkcmd | getline screen_sizetmp) > 0) {
+                close(mkcmd)
+            }
             w = 0
             screen_h = 0
-            system("wm size | grep -oE '[0-9]+x[0-9]+$' > /sdcard/screen_size.tmp")
-            getline screen_size < "/sdcard/screen_size.tmp"
-            close("/sdcard/screen_size.tmp")
+            system("wm size | grep -oE '[0-9]+x[0-9]+$' > "screen_sizetmp)
+            getline screen_size < screen_sizetmp
+            close(screen_sizetmp)
             split(screen_size, screen_array, "x")
             screen_h = screen_array[1];
             w = int(screen_array[2]);
-            system("rm -f /sdcard/screen_size.tmp")
+            system("rm -f "screen_sizetmp)
 
         }
     start_x = int(x0)
