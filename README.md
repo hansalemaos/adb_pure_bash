@@ -89,7 +89,7 @@ awk -f /sdcard/rgbtools/awkrgbmean.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v w=
 
 ## click on the center coordinates of the first element 
 
-```bash
+```sh
 sh /sdcard/uidumpparser/u.sh > /sdcard/u.txt
 sh /sdcard/tap1stcoords/tap_first_center_coords.sh /sdcard/u.txt
 sh /sdcard/activityparser/awkparser.sh > /sdcard/a.txt
