@@ -104,4 +104,4 @@ awk -f /sdcard/awkprint/awk_pretty_print.awk -v fs="\t" -v m=15 /sdcard/a.txt
 
 sh /sdcard/uidumpparser/u.sh > /sdcard/u.txt
 awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/u.txt
-```sh
+```
