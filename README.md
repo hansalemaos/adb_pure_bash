@@ -190,3 +190,14 @@ findshortest=1
 sh /sdcard/regex/regexnongreedy.sh "$regularexpression" "$findshortest" "$string"
 # oiba
 ```
+
+## Counting Colors in a Region:
+
+```sh
+# This command counts the occurrences of each color in the region defined by (1,1) to (100,100) on the screen
+awk -f /sdcard/rgbtools/awkcountcolors.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100
+
+# Here, the screen width (w) is specified as 1600 pixels. (a little faster)
+awk -f /sdcard/rgbtools/awkcountcolors.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v w=1600
+
+```
