@@ -86,3 +86,12 @@ awk -f /sdcard/rgbtools/awkrgbmean.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100
 awk -f /sdcard/rgbtools/awkrgbmean.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v w=1600
 # This command is similar to Example 1, but it additionally sets the screen width w as 1600 (faster).
 ```
+
+## click on the center coordinates of the first element 
+
+```bash
+sh /sdcard/uidumpparser/u.sh > /sdcard/u.txt
+sh /sdcard/tap1stcoords/tap_first_center_coords.sh /sdcard/u.txt
+sh /sdcard/activityparser/awkparser.sh > /sdcard/a.txt
+sh /sdcard/tap1stcoords/tap_first_center_coords.sh /sdcard/a.txt
+```
