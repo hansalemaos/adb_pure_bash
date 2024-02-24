@@ -125,3 +125,24 @@ awk -f /sdcard/rgbtools/awksearchrgb.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v 
 awk -f /sdcard/rgbtools/awksearchrgb.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v sep="#" -v rgb="4,8,37#5,9,38" -v breakfirst=1
 
 ```
+
+## add a new column (like pd.Series.apply)
+
+```sh
+sh /sdcard/uidumpparser/u.sh
+
+# This example creates a new column "text2" with the length of each entry in the column "text".
+
+awk -f /sdcard/apply/awkapply.awk -v column="text" -v newcolumn="text2" -v apply="{printf length(\$0)}" /sdcard/u.txt > /sdcard/p.txt
+
+# In this example, the "endy2" column is created. If the value in "endy" is greater than 700, the value in "endy" will be "1" else "0".
+
+awk -f /sdcard/apply/awkapply.awk -v column="endy" -v newcolumn="endy2" -v apply="{printf (\$0 \> 700)}" /sdcard/u.txt > /sdcard/p.txt
+
+# Here, the is_clickable is set to true or false based on whether the original value contains the string "true" or not.
+
+awk -f /sdcard/apply/awkapply.awk -v column="clickable" -v newcolumn="is_clickable" -v apply="{printf (\$0 \~ \"true\")}" /sdcard/u.txt > /sdcard/p.txt
+
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+
+```
