@@ -39,3 +39,26 @@ awk -f /sdcard/awkloc/aloc.awk -v query="CLASSNAME~~widget|HEIGHT>>90|VISIBILITY
 # and=1: all conditions must be met
 # and=0: any condition must be met
 ```
+
+## get r,g,b values 
+
+```bash
+awk -f /sdcard/awkrgb.awk -v c="1300,1#111,111#1000,140" -v w=1600
+
+# Provide the -v c parameter to specify the coordinates to extract RGB values from. Coordinates should be in the format x,y, separated by #. Multiple coordinates can be provided, separated by #.
+
+# Optionally, provide the -v w parameter to specify the screen width (saves some time). If not provided, the script will attempt to determine the screen width automatically.
+
+# For example, the following command extracts RGB values for the coordinates 1300,1; 111,111; and 1000,140 from a screen with a width of 1600 pixels:
+
+awk -f /path/to/awkrgb.awk -v c="1300,1#111,111#1000,140" -v w=1600
+
+# Other examples
+
+# takes a little longer 
+awk -f /sdcard/awkrgb.awk -v c="1300,1#111,111#1000,140"
+
+# another sep
+awk -f /sdcard/awkrgb.awk -v c="1300,1!111,111!1000,140" -v sep="!"
+
+```
