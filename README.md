@@ -214,3 +214,11 @@ awk -f /sdcard/inevents/sendeventtap.awk -v x=212 -v y=126 -v devi=event4 -v w=1
 # if you don't know m, w, h (takes a little longer)
 awk -f /sdcard/inevents/sendeventtap.awk -v x=214 -v y=126 -v devi=event4
 ```
+
+## sendevent keyboard
+
+```sh
+awk -f /sdcard/sendeventkeys.awk -v event="EV_KEY" -v keycode="KEY_Q" -v devi="/dev/input/event3" -v duration=1
+awk -f /sdcard/sendeventkeys.awk -v event="EV_KEY" -v keycode="KEY_A" -v devi="/dev/input/event3" -v duration=1
+```
+
