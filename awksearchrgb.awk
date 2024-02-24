@@ -1,4 +1,4 @@
-function executeAWKScript(script, args, cs) {
+function executeAWKScript(script, args, cs, bf) {
     cmd = "awk -f " script " " args
     while ((cmd | getline) > 0) {
         split($0, ARGVPARSED, ",");
@@ -6,6 +6,9 @@ function executeAWKScript(script, args, cs) {
         for (jx in cs) {
             if (cs[jx]==vatmp){
                 print $0
+                if (breakfirst>0){
+                    exit;
+                }
             }
         }
     }
@@ -15,6 +18,9 @@ function executeAWKScript(script, args, cs) {
 BEGIN {
     if (! sep) {
         sep="#";
+    }
+    if (! breakfirst){
+        breakfirst=0;
     }
     split(rgb, colorstosearch, sep);
     script = ARGV[0]
@@ -28,7 +34,7 @@ BEGIN {
     if (w){
         args=args" -v w="w
     }
-    executeAWKScript(script, args, colorstosearch)
+    executeAWKScript(script, args, colorstosearch, breakfirst)
 }
 
 # awk -f /sdcard/rgbtools/awksearchrgb.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v sep="#" -v rgb="4,8,37#5,9,38"
