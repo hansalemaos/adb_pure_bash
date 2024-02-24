@@ -73,3 +73,16 @@ awk -f /sdcard/rgbtools/awkrgbregion.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100
 awk -f /sdcard/rgbtools/awkrgbregion.awk -v x0=1 -v y0=1 -v x1=10 -v y1=10 -w 1600
 
 ```
+
+## get RGB mean of a region
+```bash
+
+awk -f /sdcard/rgbtools/awkrgbmean.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100
+# This command executes the awkrgbmean.awk script.
+# It sets the coordinates (x0, y0, x1, y1) for the region of interest as 1, 1, 100, 100 respectively.
+# The RGB values for this region are calculated using the awkrgbregion.awk script (assumed to be in the same directory as awkrgbmean.awk), and their mean is computed.
+# The mean RGB values are printed to the standard output.
+
+awk -f /sdcard/rgbtools/awkrgbmean.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v w=1600
+# This command is similar to Example 1, but it additionally sets the screen width w as 1600 (faster).
+```
