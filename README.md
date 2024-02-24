@@ -146,3 +146,33 @@ awk -f /sdcard/apply/awkapply.awk -v column="clickable" -v newcolumn="is_clickab
 awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
 
 ```
+
+## sortby columns
+
+```sh
+sh /sdcard/uidumpparser/u.sh
+
+# This example sorts the data in u.txt first by the centery column and then by the area column.
+# Numeric sorting is enabled.
+file="/sdcard/u.txt"
+sortby="centery;area"
+numeric=1
+sh /sdcard/sortbycol/sortbycol.sh "$sortby" "$file" "$numeric" >/sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+
+# Here, the data is sorted by the area column first and then by the centery column.
+# Numeric sorting is enabled
+file="/sdcard/u.txt"
+sortby="area;centery"
+numeric=1
+sh /sdcard/sortbycol/sortbycol.sh "$sortby" "$file" "$numeric" >/sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+
+# This example sorts the data by the text column only.
+# Non-numeric sorting is performed, and the output is written to p.txt.
+file="/sdcard/u.txt"
+sortby="text"
+numeric=0
+sh /sdcard/sortbycol/sortbycol.sh "$sortby" "$file" "$numeric" >/sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+```
