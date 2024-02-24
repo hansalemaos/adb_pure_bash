@@ -1,4 +1,11 @@
 #!/usr/bin/env sh
+trim() {
+    var="$1"
+    var="${var#"${var%%[![:space:]]*}"}"
+    var="${var%"${var##*[![:space:]]}"}"
+    echo "$var"
+}
+
 _sdcard_goodelements_txt=$(mktemp)
 _sdcard_NAF_txt=$(mktemp)
 _sdcard_index_txt=$(mktemp)
@@ -59,7 +66,8 @@ awk '{print $1}' "$_sdcard_bounds_txt" >"$_sdcard_startx_txt"
 awk '{print $3}' "$_sdcard_bounds_txt" >"$_sdcard_endx_txt"
 awk '{print $2}' "$_sdcard_bounds_txt" >"$_sdcard_starty_txt"
 awk '{print $4}' "$_sdcard_bounds_txt" >"$_sdcard_endy_txt"
-printf "%s\t" "index" "text" "resource-id" "class" "package" "content-desc" "checkable" "checked" "clickable" "enabled" "focusable" "focused" "scrollable" "long-clickable" "password" "selected" "startx" "endx" "starty" "endy" "centerx" "centery" "area" "width" "height" | echo "$(cat)" > "$_sdcard_u_txt"
+v1=$(printf "%s\t" "index" "text" "resource-id" "class" "package" "content-desc" "checkable" "checked" "clickable" "enabled" "focusable" "focused" "scrollable" "long-clickable" "password" "selected" "startx" "endx" "starty" "endy" "centerx" "centery" "area" "width" "height" | echo "$(cat)") #| trim  > "$_sdcard_u_txt"
+trim "$v1" > "$_sdcard_u_txt"
 paste "$_sdcard_index_txt" "$_sdcard_text_txt" "$_sdcard_resource_id_txt" "$_sdcard_class_txt" "$_sdcard_package_txt" "$_sdcard_content_desc_txt" "$_sdcard_checkable_txt" "$_sdcard_checked_txt" "$_sdcard_clickable_txt" "$_sdcard_enabled_txt" "$_sdcard_focusable_txt" "$_sdcard_focused_txt" "$_sdcard_scrollable_txt" "$_sdcard_long_clickable_txt" "$_sdcard_password_txt" "$_sdcard_selected_txt" "$_sdcard_startx_txt" "$_sdcard_endx_txt" "$_sdcard_starty_txt" "$_sdcard_endy_txt" "$_sdcard_centerx_txt" "$_sdcard_centery_txt" "$_sdcard_area_txt" "$_sdcard_width_txt" "$_sdcard_height_txt" >> "$_sdcard_u_txt"
 rm -f "$_sdcard_index_txt"
 rm -f "$_sdcard_text_txt"

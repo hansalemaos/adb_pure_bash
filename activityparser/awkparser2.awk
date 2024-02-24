@@ -84,7 +84,7 @@ BEGIN {
     printf "CENTER_X"
     printf FS
     printf "CENTER_Y"
-    printf FS
+    #printf FS
     print
 
 }

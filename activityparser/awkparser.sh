@@ -24,6 +24,7 @@ withoutleading=$(echo "$lasteletext" |  awk '{ sub(/^[ \t]+|[ \t]/, ""); print }
 echo "$withoutleading" >  "$_sdcard_tempfileelements1_txt"
 echo "$stringindt" > "$_sdcard_tempfileelements2_txt"
 paste -d ' ' "$_sdcard_tempfileelements1_txt"  "$_sdcard_tempfileelements2_txt" > "$_sdcard_wholeelements_txt"
+sed -i -E 's/ aid=[0-9]+(})/\1}/g' "$_sdcard_wholeelements_txt"
 cat "$_sdcard_wholeelements_txt" | sed -E 's/([^#0-9]+[0-9]+)}/\1\ #XXXXXXXX\ NOID}/g' > "$_sdcard_wholeelements4_txt"
 cat "$_sdcard_wholeelements4_txt" | sed -E 's/(#[0-9a-f]+)}/\1\ NOID}/g' > "$_sdcard_wholeelements2_txt"
 cat "$_sdcard_wholeelements2_txt" | awk 'BEGIN {FS="[[:space:]\{\}]+"; OFS="\t"; } {for (i=1; i <= NF; i++) printf "%s%s", $i, (i < NF ? OFS : ORS)}' > "$_sdcard_elementsawkformat_txt"
