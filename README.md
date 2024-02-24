@@ -40,7 +40,7 @@ awk -f /sdcard/awkloc/aloc.awk -v query="CLASSNAME~~widget|HEIGHT>>90|VISIBILITY
 # and=0: any condition must be met
 ```
 
-## get RGB values 
+## get RGB values
 
 ```sh
 awk -f /sdcard/rgbtools/awkrgb.awk -v c="1300,1#111,111#1000,140" -v w=1600
@@ -55,7 +55,7 @@ awk -f /sdcard/rgbtools/awkrgb.awk -v c="1300,1#111,111#1000,140" -v w=1600
 
 # Other examples
 
-# takes a little longer 
+# takes a little longer
 awk -f /sdcard/rgbtools/awkrgb.awk -v c="1300,1#111,111#1000,140"
 
 # another sep
@@ -87,7 +87,7 @@ awk -f /sdcard/rgbtools/awkrgbmean.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v w=
 # This command is similar to Example 1, but it additionally sets the screen width w as 1600 (faster).
 ```
 
-## click on the center coordinates of the first element 
+## click on the center coordinates of the first element
 
 ```sh
 sh /sdcard/uidumpparser/u.sh > /sdcard/u.txt
@@ -96,7 +96,7 @@ sh /sdcard/activityparser/awkparser.sh > /sdcard/a.txt
 sh /sdcard/tap1stcoords/tap_first_center_coords.sh /sdcard/a.txt
 ```
 
-## pretty print 
+## pretty print
 
 ```sh
 sh /sdcard/activityparser/awkparser.sh > /sdcard/a.txt
@@ -104,4 +104,21 @@ awk -f /sdcard/awkprint/awk_pretty_print.awk -v fs="\t" -v m=15 /sdcard/a.txt
 
 sh /sdcard/uidumpparser/u.sh > /sdcard/u.txt
 awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/u.txt
+```
+
+## search for RGB color in area
+
+```sh
+# This command executes the awksearchrgb.awk script.
+# It sets the coordinates (x0, y0, x1, y1) for the region of interest as 1, 1, 100, 100, respectively.
+# It specifies the separator as #.
+# It provides the RGB color values to search for as 4,8,37 and 5,9,38.
+# The script will search for these RGB values in the specified region using awkrgbregion.awk and print any matching lines.
+awk -f /sdcard/rgbtools/awksearchrgb.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v sep="#" -v rgb="4,8,37#5,9,38"
+
+
+# This command is similar to Example 1, but it additionally sets the screen width w as 1600 (faster).
+# This extra parameter is passed to awkrgbregion.awk to assist in the calculation of RGB values.
+awk -f /sdcard/rgbtools/awksearchrgb.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v w=1600 -v rgb="4,8,37#5,9,38"
+
 ```
