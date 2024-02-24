@@ -95,3 +95,13 @@ sh /sdcard/tap1stcoords/tap_first_center_coords.sh /sdcard/u.txt
 sh /sdcard/activityparser/awkparser.sh > /sdcard/a.txt
 sh /sdcard/tap1stcoords/tap_first_center_coords.sh /sdcard/a.txt
 ```
+
+## pretty print 
+
+```sh
+sh /sdcard/activityparser/awkparser.sh > /sdcard/a.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk -v fs="\t" -v m=15 /sdcard/a.txt
+
+sh /sdcard/uidumpparser/u.sh > /sdcard/u.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/u.txt
+```sh
