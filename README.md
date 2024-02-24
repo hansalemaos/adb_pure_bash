@@ -176,3 +176,17 @@ numeric=0
 sh /sdcard/sortbycol/sortbycol.sh "$sortby" "$file" "$numeric" >/sdcard/p.txt
 awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
 ```
+
+## non greedy regex 
+```sh
+string="oioioibabapooiba"
+regularexpression="oi.*ba"
+findshortest=0
+sh /sdcard/regex/regexnongreedy.sh "$regularexpression" "$findshortest" "$string"
+# oioioiba
+string="oioioibabapooiba"
+regularexpression="oi.*ba"
+findshortest=1
+sh /sdcard/regex/regexnongreedy.sh "$regularexpression" "$findshortest" "$string"
+# oiba
+```
