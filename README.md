@@ -222,3 +222,8 @@ awk -f /sdcard/sendeventkeys.awk -v event="EV_KEY" -v keycode="KEY_Q" -v devi="/
 awk -f /sdcard/sendeventkeys.awk -v event="EV_KEY" -v keycode="KEY_A" -v devi="/dev/input/event3" -v duration=1
 ```
 
+## input text natural 
+
+```sh
+sh /sdcard/inevents/inputtextnatural.sh "Hoje vou sair!"
+```
