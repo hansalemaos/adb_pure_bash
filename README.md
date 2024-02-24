@@ -201,3 +201,16 @@ awk -f /sdcard/rgbtools/awkcountcolors.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100
 awk -f /sdcard/rgbtools/awkcountcolors.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v w=1600
 
 ```
+
+## sendevent tap 
+
+```sh
+# fromn the second time on, it is faster when you use the same config
+awk -f /sdcard/inevents/sendeventtap.awk -v x=212 -v y=126 -v devi=event4 -v m=32767 -v w=1600 -v h=900
+
+# if you don't know m (takes a little longer)
+awk -f /sdcard/inevents/sendeventtap.awk -v x=212 -v y=126 -v devi=event4 -v w=1600 -v h=900
+
+# if you don't know m, w, h (takes a little longer)
+awk -f /sdcard/inevents/sendeventtap.awk -v x=214 -v y=126 -v devi=event4
+```
