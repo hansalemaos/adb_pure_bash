@@ -264,3 +264,96 @@ sh /sdcard/dropduplicates/drop_duplicates_by_column.sh "text" /sdcard/u.txt >/sd
 
 
 ```
+
+## array contains
+
+```sh
+array_of_numbers=( "1" "2" "3" )
+needle1="3"
+sh /sdcard/usefulscripts/array_contains.sh "1" "${array_of_numbers[@]}"
+```
+
+## join array
+
+```sh
+array_of_numbers=( "1" "2" "3" )
+sh /sdcard/usefulscripts/array_to_string.sh ", " "${array_of_numbers[@]}"
+```
+
+## get random number between
+
+```sh
+sh /sdcard/usefulscripts/get_random_number_between.sh 100 200
+```
+
+## Generate regex for numbers
+
+```sh
+sh /sdcard/usefulscripts/get_range.sh 100 2000
+```
+
+## join str with one char
+```sh
+sh /sdcard/usefulscripts/joinsinglechar.sh /sdcard/u.txt "X"
+```
+
+## remove charset from string
+```sh
+sh /sdcard/usefulscripts/remove_charset_from_string.sh "The Quick Brown Fox" "[aeiou]"
+```
+
+## strip quotes
+```sh
+sh /sdcard/usefulscripts/strip_quotes.sh ""sdfsdfsd'""
+```
+
+## split at delimiter
+```sh
+sh /sdcard/usefulscripts/split_string_at.sh "baba,bddd,ba" ","
+```
+
+## trim string
+```sh
+sh /sdcard/usefulscripts/trim_string.sh "bbdsa "
+```
+
+## maketouch
+```sh
+sh /sdcard/usefulscripts/make_touch.sh /sdcard/bibi/baba/sh
+```
+
+## get display height/width
+```sh
+read width height <<< $(sh /sdcard/usefulscripts/getwidthheight.sh)
+```
+
+
+## check internet connection
+```sh
+if result > 0 -> working
+
+sh /sdcard/usefulscripts/internetconnectioncheck.sh
+```
+
+## get random line from file
+```sh
+sh /sdcard/usefulscripts/randomlinefromfile.sh /sdcard/u.txt
+```
+
+## get line from file (starting at 1)
+```sh
+sh /sdcard/usefulscripts/get_line_from_file.sh 1 /sdcard/u.txt
+```
+
+## generate password
+```sh
+sh /sdcard/usefulscripts/generatepassword.sh 16
+)H0HUt$S+4*&rOx*
+```
+
+## check if keyboard shown
+```sh
+returns 0 if shown, else 1
+
+sh /sdcard/inevents/iskeyboardshown.sh
+```
