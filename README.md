@@ -362,3 +362,13 @@ sh /sdcard/inevents/iskeyboardshown.sh
 ```sh
 sh  /sdcard/uniqueandcommon.sh /sdcard/u.sh /sdcard/p.txt
 ```
+
+## generate email 
+
+```sh
+saveinfile="/sdcard/emailaccount.txt"
+lastnames="/sdcard/lastnames.csv"
+firstnames_male="/sdcard/firstnames_male.csv"
+firstnames_female="/sdcard/firstnames_female.txt"
+sh generateemail "$saveinfile" "$lastnames" "$firstnames_male" "$firstnames_female"
+```
