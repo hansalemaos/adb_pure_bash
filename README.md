@@ -252,3 +252,15 @@ sh /sdcard/firefoxdownload.sh https://github.com/hansalemaos/Magisk_collection/r
 sh /sdcard/shuffleelements/shuffleelements.sh /sdcard/u.txt >/sdcard/o.txt
 awk -f /sdcard/awk_pretty_print.awk /sdcard/o.txt
 ```
+
+## drop duplicates by one or more columns
+```sh
+
+sh /sdcard/dropduplicates/drop_duplicates_by_column.sh "text,package" /sdcard/u.txt >/sdcard/o.txt
+
+sh /sdcard/dropduplicates/drop_duplicates_by_column.sh "text,package,centerx" /sdcard/u.txt >/sdcard/o.txt
+
+sh /sdcard/dropduplicates/drop_duplicates_by_column.sh "text" /sdcard/u.txt >/sdcard/o.txt
+
+
+```
