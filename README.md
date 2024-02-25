@@ -234,3 +234,15 @@ sh /sdcard/inevents/inputtextnatural.sh "Hoje vou sair!"
 sh /sdcard/inevents/swipe_randomly.sh 70 80 45 47 30 40 45 47 1000 3000 5 10
 # the values that have to be passed: "$start_height1" "$start_height2" "$start_width1" "$start_width2" "$end_height1" "$end_height2" "$end_width1" "$end_width2" "$swipemintime" "$swipemaxtime" "$min_repeat" "$max_repeat"
 ```
+
+## firefox autoinstall + permissions
+```sh
+sh /sdcard/ffox/installfirefox.sh
+```
+
+
+## firefox downloader
+```sh
+# file + timeout
+sh /sdcard/firefoxdownload.sh https://github.com/hansalemaos/Magisk_collection/raw/main/TotalCommander_3.42beta5-1183_minAPI8_arm64-v8a.apk 60
+```
