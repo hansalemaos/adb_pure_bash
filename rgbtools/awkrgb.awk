@@ -14,7 +14,7 @@ function getRGBValueAtCoords(x_coord, y_coord, screen_width) {
 }
 
 BEGIN {
-    cmd = "mktemp"
+    mkcmd = "mktemp"
     if ((mkcmd | getline rgbdatatmp) > 0) {
         close(mkcmd)
     }
