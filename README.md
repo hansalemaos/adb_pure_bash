@@ -246,3 +246,9 @@ sh /sdcard/ffox/installfirefox.sh
 # file + timeout
 sh /sdcard/firefoxdownload.sh https://github.com/hansalemaos/Magisk_collection/raw/main/TotalCommander_3.42beta5-1183_minAPI8_arm64-v8a.apk 60
 ```
+
+## shuffle / sample 
+```sh
+sh /sdcard/shuffleelements/shuffleelements.sh /sdcard/u.txt >/sdcard/o.txt
+awk -f /sdcard/awk_pretty_print.awk /sdcard/o.txt
+```
