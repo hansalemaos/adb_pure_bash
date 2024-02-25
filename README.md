@@ -357,3 +357,8 @@ returns 0 if shown, else 1
 
 sh /sdcard/inevents/iskeyboardshown.sh
 ```
+
+## common and different lines in 2 files
+```sh
+sh  /sdcard/uniqueandcommon.sh /sdcard/u.sh /sdcard/p.txt
+```
