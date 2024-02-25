@@ -227,3 +227,10 @@ awk -f /sdcard/sendeventkeys.awk -v event="EV_KEY" -v keycode="KEY_A" -v devi="/
 ```sh
 sh /sdcard/inevents/inputtextnatural.sh "Hoje vou sair!"
 ```
+
+## random swipe
+```sh
+# everything in percent except the last 4 values 
+sh /sdcard/inevents/swipe_randomly.sh 70 80 45 47 30 40 45 47 1000 3000 5 10
+# the values that have to be passed: "$start_height1" "$start_height2" "$start_width1" "$start_width2" "$end_height1" "$end_height2" "$end_width1" "$end_width2" "$swipemintime" "$swipemaxtime" "$min_repeat" "$max_repeat"
+```
