@@ -3,7 +3,7 @@
 
 # Everything starts with element dumps
 
-## Fragment dump as CSV (Tab-separated values)
+## Fragment dump as TSV (Tab-separated values)
 
 ```sh
 sh /sdcard/activityparser/awkparser.sh > /sdcard/a.txt
@@ -74,7 +74,7 @@ ELEMENT_INDEX | CLASSNAME                                         | MID     | VI
 61            | android.view.View                                 | ec877b5 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 818              | 166              | 856            | 1254           | #7f080129 | app:id/rightDragHandle          | 20        | 1|3|4|5|6|7                   | 818     | 202     | 1674  | 1456  | 856   | 1254   | 1073424 | 1246     | 829      |
 62            | com.bluestacks.launcher.widget.ItemOptionView$c   | ad24e4a | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1564           | #XXXXXXXX | NOID                            | 18        | 1|3|4|5|6                     | 0       | 36      | 900   | 1600  | 900   | 1564   | 1407600 | 450      | 818      |
 ```
-## Uiautomator dump as CSV (Tab-separated values)
+## Uiautomator dump as TSV (Tab-separated values)
 ```sh
 sh /sdcard/uidumpparser/u.sh
 awk -f /sdcard/awk_pretty_print.awk /sdcard/u.txt
