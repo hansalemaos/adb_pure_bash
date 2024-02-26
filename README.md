@@ -1,4 +1,4 @@
-# Pure bash library to do ADB like automation directly on the device without using ADB
+# Pure shell library to do ADB like automation directly on the device without using ADB
 
 
 # Everything starts with element dumps
