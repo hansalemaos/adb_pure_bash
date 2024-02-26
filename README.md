@@ -122,6 +122,8 @@ index | text                       | resource-id                                
 
 ## localize elements
 
+### The idea is using awk like pandas here: https://github.com/hansalemaos/usefuladbplus
+
 ```sh
 sh /sdcard/uidumpparser/u.sh > /sdcard/u.txt
 awk -f /sdcard/awkloc/aloc.awk -v query="width>>300|height>>90|class~~view" -v sep="|" -v and=1 ./sdcard/u.txt
@@ -149,6 +151,8 @@ awk -f /sdcard/awkloc/aloc.awk -v query="CLASSNAME~~widget|HEIGHT>>90|VISIBILITY
 # and=1: all conditions must be met
 # and=0: any condition must be met
 ```
+
+## Some image stuff 
 
 ## get RGB values
 
