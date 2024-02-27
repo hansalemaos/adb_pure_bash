@@ -537,3 +537,18 @@ awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
 awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_lower" -v strlower=1 /sdcard/u.txt > /sdcard/p.txt
 awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
 ```
+
+## complete rgb screen dump 
+
+```sh
+# output to /sdcard/screencaprgbdata.txt (default)
+awk -f /sdcard/rgbinfos.awk
+# another output path
+awk -f /sdcard/rgbinfos.awk -v o="/sdcard/screencaprgbdata2.txt"
+# faster when adding screen width/height
+awk -f /sdcard/rgbinfos.awk -v o="/sdcard/screencaprgbdata2.txt" -v w=1600 -v h=900
+# passing already captured screendata
+screencap /sdcard/dumpd.tmp
+awk -f /sdcard/rgbinfos.awk -v screendump="/sdcard/dumpd.tmp" -v o="/sdcard/screencaprgbdata2.txt"
+awk -f /sdcard/rgbinfos.awk -v screendump="/sdcard/dumpd.tmp" -v o="/sdcard/screencaprgbdata2.txt" w=1600 h=900
+```
