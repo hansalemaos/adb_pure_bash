@@ -551,4 +551,16 @@ awk -f /sdcard/rgbinfos.awk -v o="/sdcard/screencaprgbdata2.txt" -v w=1600 -v h=
 screencap /sdcard/dumpd.tmp
 awk -f /sdcard/rgbinfos.awk -v screendump="/sdcard/dumpd.tmp" -v o="/sdcard/screencaprgbdata2.txt"
 awk -f /sdcard/rgbinfos.awk -v screendump="/sdcard/dumpd.tmp" -v o="/sdcard/screencaprgbdata2.txt" w=1600 h=900
+
+# $ tail /sdcard/screencaprgbdata2.txt
+1590,899,81,85,107
+1591,899,81,85,107
+1592,899,81,85,107
+1593,899,81,85,107
+1594,899,81,85,107
+1595,899,81,85,107
+1596,899,81,85,107
+1597,899,81,85,107
+1598,899,81,85,107
+1599,899,81,85,107
 ```
