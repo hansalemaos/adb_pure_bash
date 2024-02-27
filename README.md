@@ -486,3 +486,54 @@ firstnames_male="/sdcard/firstnames_male.csv"
 firstnames_female="/sdcard/firstnames_female.txt"
 sh generateemail "$saveinfile" "$lastnames" "$firstnames_male" "$firstnames_female"
 ```
+
+## some pandas.Series like stuff 
+
+```sh
+awk -f /sdcard/awkseries/awkseries.awk -v column="text" -v newcolumn="text2" /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="text" -v newcolumn="is_empty" -v is_empty=1 /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="text" -v newcolumn="length" -v len=1 /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="centerx" -v newcolumn="centerx_lt" -v lt=1 -v value=700 /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="centerx" -v newcolumn="centerx_gt" -v gt=1 -v value=700 /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="centerx" -v newcolumn="centerx_ge" -v ge=1 -v value=700 /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="centerx" -v newcolumn="centerx_le" -v le=1 -v value=700 /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="centerx" -v newcolumn="centerx_eq" -v eq=1 -v value=700 /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="area" -v newcolumn="area_count" -v charcount=1 -v value="1" /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="area" -v newcolumn="area_count" -v charcount=1 -v value="0" /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+
+#returns index, 0 if not
+awk -f /sdcard/awkseries/awkseries.awk -v column="area" -v newcolumn="area_strcontains" -v strcontains=1 -v value="000" /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_sorted" -v sortletters=1 /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_replaced" -v strreplace=1 -v old=andro -v new=BUDU /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="area" -v newcolumn="area_abs" -v absolute=1 /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_leven" -v leven=1 -v str="android.view.View" /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_starts" -v strstartswith=1 -v value="android.view" /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_ends" -v strendswith=1 -v value="android.view" /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_rstrip" -v strrstrip=1 -v value="w" /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_lstrip" -v strlstrip=1 -v value="a" /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_spacestrip" -v spacestrip=1 /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_upper" -v strupper=1 /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_lower" -v strlower=1 /sdcard/u.txt > /sdcard/p.txt
+awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+```
