@@ -564,3 +564,15 @@ awk -f /sdcard/rgbinfos.awk -v screendump="/sdcard/dumpd.tmp" -v o="/sdcard/scre
 1598,899,81,85,107
 1599,899,81,85,107
 ```
+
+
+## more color stuff 
+```sh
+awk -f /sdcard/rgbinfos.awk -v o="/sdcard/baba.txt"
+awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6" -v print_colors=1 -v print_coords=1 -v action=print_data -v ors="\t" -v sep="#" "/sdcard/baba.txt"
+awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6" -v print_colors=1 -v print_coords=1 -v rgbcolor="4,8,37" -v action=search_color -v ors="\t" -v sep="#" "/sdcard/baba.txt"
+awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6" -v print_colors=0 -v print_coords=1 -v rgbcolor="4,8,37" -v action=search_color -v ors="\t" -v sep="#" "/sdcard/baba.txt"
+awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6" -v rgbcolor="129,131,145" -v action=count_color -v sep="#" "/sdcard/baba.txt"
+awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6#406,136,409,153#136,406,153,409" -v action=dominant_color -v sep="#" "/sdcard/baba.txt"
+awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6" -v action=count_all_colors -v sep="#" "/sdcard/baba.txt"
+```

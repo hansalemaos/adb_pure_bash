@@ -9,7 +9,7 @@ function getPartOfRegion(start_x, start_y, end_x, end_y, screen_width) {
     abscoord=1;
     offset_start = 16
     formatx ="'4/1 \"%d,\" \"\\n\"'"
-    comi="hexdump -n " readqty " -s " offset_start " -v -e " formatx " " dumpdata " | awk 'BEGIN{FS=\",\"}(NR<"sequencef"){print NR%"dividercoord"\",\"int(NR/"dividercoord")\",\"$1\",\"$2\",\"$3}' > "area_hexdumptmp
+    comi="hexdump -n " readqty " -s " offset_start " -v -e " formatx " " dumpdata " | awk 'BEGIN{FS=\",\"}{print int(int(NR-1)/"dividercoord")\",\"int(int(NR-1)%"dividercoord")\",\"$1\",\"$2\",\"$3}' > "area_hexdumptmp
     system(comi);
 }
 
@@ -56,7 +56,7 @@ BEGIN {
 # awk -f /sdcard/rgbinfos.awk
 
 # another output path
-# awk -f /sdcard/rgbinfos.awk -v o="/sdcard/screencaprgbdata2.txt"
+# awk -f /sdcard/rgbinfos.awk -v o="/sdcard/baba.txt"
 
 # another output path (faster when adding screen width/height)
 # awk -f /sdcard/rgbinfos.awk -v o="/sdcard/screencaprgbdata2.txt" -v w=1600 -v h=900
