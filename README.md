@@ -586,3 +586,9 @@ cat /sdcard/elediff2.txt
 sh /sdcard/awkprint/getelementdifference.sh /sdcard/ele1.txt /sdcard/ele2.txt /sdcard/elediff3.txt /sdcard/uidumpparser/u.sh
 cat /sdcard/elediff3.txt
 ```
+
+## random - percentage 
+```sh
+# returns 60% 1, 40% 0
+sh /sdcard/usefulscripts/percentagedecide.sh 40
+```
