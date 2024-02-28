@@ -7,7 +7,6 @@ randomsleep(){
         randno=$((1 + RANDOM))
         randomnumber=$((randno % 3))
         sleep 0."$randomnumber"
-        #echo 0."$randomnumber"
         roundscounter=$((roundscounter + 1))
     done
 }
