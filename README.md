@@ -592,3 +592,9 @@ cat /sdcard/elediff3.txt
 # returns 60% 1, 40% 0
 sh /sdcard/usefulscripts/percentagedecide.sh 40
 ```
+
+## random sleep
+```sh
+# sleeps 10 times between 0.0 and 0.2 seconds
+sh /sdcard/usefulscripts/randomsleep.sh 10
+```
