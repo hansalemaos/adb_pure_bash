@@ -604,3 +604,10 @@ sh /sdcard/usefulscripts/randomsleep.sh 10
 ```sh
 sh /sdcard/usefulscripts/topactivitycontains.sh instagram
 ```
+
+## test keyevents 
+
+```sh
+# return/y/Y == yes
+sh /sdcard/usefulscripts/testkeyevents.sh
+```
