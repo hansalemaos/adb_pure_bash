@@ -611,3 +611,8 @@ sh /sdcard/usefulscripts/topactivitycontains.sh instagram
 # return/y/Y == yes
 sh /sdcard/usefulscripts/testkeyevents.sh
 ```
+
+## awk get path of executed script 
+```sh
+awk -f /sdcard/usefulscripts/templateawkgetownpath.awk
+```
