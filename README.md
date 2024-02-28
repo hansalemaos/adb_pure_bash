@@ -598,3 +598,9 @@ sh /sdcard/usefulscripts/percentagedecide.sh 40
 # sleeps 10 times between 0.0 and 0.2 seconds
 sh /sdcard/usefulscripts/randomsleep.sh 10
 ```
+
+## check top activity 
+
+```sh
+sh /sdcard/usefulscripts/topactivitycontains.sh instagram
+```
