@@ -76,7 +76,7 @@ ELEMENT_INDEX | CLASSNAME                                         | MID     | VI
 ```
 ## Uiautomator dump as TSV (Tab-separated values)
 ```sh
-sh /sdcard/uidumpparser/u.sh
+sh /sdcard/uidumpparser/u.sh > /sdcard/u.txt
 awk -f /sdcard/awk_pretty_print.awk /sdcard/u.txt
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height |
@@ -575,4 +575,14 @@ awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6" -v print_colo
 awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6" -v rgbcolor="129,131,145" -v action=count_color -v sep="#" "/sdcard/baba.txt"
 awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6#406,136,409,153#136,406,153,409" -v action=dominant_color -v sep="#" "/sdcard/baba.txt"
 awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6" -v action=count_all_colors -v sep="#" "/sdcard/baba.txt"
+```
+
+## analyze elements - find element changes 
+
+```sh
+sh /sdcard/awkprint/getelementdifference.sh /sdcard/ele1.txt /sdcard/ele2.txt /sdcard/elediff2.txt /sdcard/activityparser/awkparser.sh
+cat /sdcard/elediff2.txt
+
+sh /sdcard/awkprint/getelementdifference.sh /sdcard/ele1.txt /sdcard/ele2.txt /sdcard/elediff3.txt /sdcard/uidumpparser/u.sh
+cat /sdcard/elediff3.txt
 ```

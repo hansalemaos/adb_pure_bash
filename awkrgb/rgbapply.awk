@@ -149,9 +149,9 @@ BEGIN {
     }
     split(areas, allareastmp, sep)
     for (ele in allareastmp){
-        we=(index(areas, sep""allareastmp[ele]""sep)+1)
+        we=(index(areas, sep""allareastmp[ele]""sep))
         if (we==0){
-            we=(index(areas, sep""allareastmp[ele])+1)
+            we=(index(areas, sep""allareastmp[ele]))
         }
         if (we==0){
             we=(index(areas, allareastmp[ele]""sep))
