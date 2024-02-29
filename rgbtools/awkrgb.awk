@@ -31,8 +31,8 @@ BEGIN {
             getline screen_size < screen_sizetmp
             close(screen_sizetmp)
             split(screen_size, screen_array, "x")
-            screen_h = screen_array[1];
-            w = int(screen_array[2]);
+            screen_h = screen_array[2];
+            w = int(screen_array[1]);
             system("rm -f "screen_sizetmp)
 
         }
