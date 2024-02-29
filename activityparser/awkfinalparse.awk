@@ -97,27 +97,24 @@ BEGIN {
     field0[FNR]=$0
 }
 END {
-    for (i = 1; i <= FNR; i++) {
-        tempvalstartx = field20[i]+0;
-        tempvalstarty = field21[i]+0;
-        tempvalendx = field22[i]+0;
-        tempvalendy = field23[i]+0;
-        smallestvaluepossible = field26[i]+0;
+    for (i = 1; i <= NR; i++) {
+        tempvalstartx = int(field20[i]);
+        tempvalstarty = int(field21[i]);
+        tempvalendx =   int(field22[i]);
+        tempvalendy =   int(field23[i]);
+        smallestvaluepossible = int(field26[i]);
         allparents="|"
         fieldfim=field0[i]
-        for (j = FNR; j >= 1; j--) {
-            if (j >= i) {
-                continue;
-            }
-            if ((smallestvaluepossible>field26[j])) {
-                tempvalstartx += field20[j];
-                tempvalstarty += field21[j];
-                smallestvaluepossible = field26[j]+0;
+        for (j = NR; j >= 1; j--) {
+            if ((j<i)&&(smallestvaluepossible>int(field26[j]))) {
+                tempvalstartx=tempvalstartx+int(field20[j]);
+                tempvalstarty=tempvalstarty+int(field21[j]);
+                smallestvaluepossible = int(field26[j])+0;
                 allparents= j "|" allparents
             }
         }
-        tempvalendx=tempvalendx+tempvalstartx;
-        tempvalendy=tempvalendy+tempvalstarty;
+        tempvalendx=tempvalendx+tempvalstartx-int(field20[i]);
+        tempvalendy=tempvalendy+tempvalstarty-int(field21[i]);
         allparents = lstrip(allparents, char_to_strip);
         allparents = rstrip(allparents, char_to_strip);
         width=tempvalendx - tempvalstartx;
