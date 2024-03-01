@@ -616,3 +616,30 @@ sh /sdcard/usefulscripts/testkeyevents.sh
 ```sh
 awk -f /sdcard/usefulscripts/templateawkgetownpath.awk
 ```
+
+## better, faster colorstuff 
+
+```sh
+# dump rgb data:
+sh /sdcard/fastrgbdump.sh -x0 183 -y0 1339 -x1 187 -y1 1343
+
+# dump rgb data from region with already captured screen
+screencap >/sdcard/capscreen.tmp
+sh /sdcard/fastrgbdump.sh -f /sdcard/capscreen.tmp -x0 183 -y0 1339 -x1 187 -y1 1343
+
+# hexdump to a file
+sh /sdcard/fastrgbdump.sh --onlyhexdump 1 >/sdcard/hexdump.tmp
+sh /sdcard/fastrgbdump.sh -x /sdcard/hexdump.tmp -x0 183 -y0 1339 -x1 187 -y1 1343
+
+# count colors in region
+sh /sdcard/fastrgbdump.sh --colorcount 1 -x0 183 -y0 1339 -x1 187 -y1 1343
+
+# color at coordinate
+sh /sdcard/fastrgbdump.sh -x0 183 -y0 1339
+
+# search for colors in region
+sh /sdcard/fastrgbdump.sh --rgbcolors 24,24,24#29,180,82 -x0 183 -y0 1339 -x1 187 -y1 1343
+
+# check if colors are in region (returns 0 for true, 1 for false)
+sh /sdcard/fastrgbdump.sh --inregion 1 --rgbcolors 24,24,24#29,180,82 -x0 183 -y0 1339 -x1 187 -y1 1343
+```
