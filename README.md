@@ -1,297 +1,935 @@
-# Pure shell library to do ADB like automation directly on Android devices without using ADB
+# dump items
 
-
-# Everything starts with element dumps
-
-## Fragment dump as TSV (Tab-separated values)
-
+## get a fragment dump 
 ```sh
-sh /sdcard/activityparser/awkparser.sh > /sdcard/a.txt
-awk -f /sdcard/awk_pretty_print.awk /sdcard/a.txt
+sh /sdcard/fragmentparser/awkparser.sh
+ELEMENT_INDEX   CLASSNAME       MID     VISIBILITY      FOCUSABLE       ENABLED DRAWN   SCROLLBARS_HORIZONTAL   SCROLLBARS_VERTICAL     CLICKABLE       LONG_CLICKABLE  CONTEXT_CLICKABLE       PFLAG_IS_ROOT_NAMESPACE PFLAG_FOCUSED   PFLAG_SELECTED  PFLAG_PREPRESSED        PFLAG_HOVERED   PFLAG_ACTIVATED PFLAG_INVALIDATED       PFLAG_DIRTY_MASK        START_X_RELATIVE        START_Y_RELATIVE        END_X_RELATIVE  END_Y_RELATIVE  HASHCODE        ELEMENT_ID      IS_ACTIVE       PARENTSINDEX    START_X START_Y END_X   END_Y   WIDTH   HEIGHT  AREA    CENTER_X        CENTER_Y
+1       android.widget.LinearLayout     b0890e3 V       .       E       .       .       .       .       .       .       .       .       .       .       .       .       .       .       0       0       900     1600    NADA    NADA    8               0       0       900     1600    900     1600    1440000 450     800
+2       android.view.ViewStub   15d0ae0 G
+...
+```
+
+## get a fragment dump with pretty print 
+```sh
+sh /sdcard/fragmentparser/awkparser.sh  | awk -f /sdcard/printer/awk_pretty_print.awk
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ELEMENT_INDEX | CLASSNAME                                         | MID     | VISIBILITY | FOCUSABLE | ENABLED | DRAWN | SCROLLBARS_HORIZONTAL | SCROLLBARS_VERTICAL | CLICKABLE | LONG_CLICKABLE | CONTEXT_CLICKABLE | PFLAG_IS_ROOT_NAMESPACE | PFLAG_FOCUSED | PFLAG_SELECTED | PFLAG_PREPRESSED | PFLAG_HOVERED | PFLAG_ACTIVATED | PFLAG_INVALIDATED | PFLAG_DIRTY_MASK | START_X_RELATIVE | START_Y_RELATIVE | END_X_RELATIVE | END_Y_RELATIVE | HASHCODE  | ELEMENT_ID                      | IS_ACTIVE | PARENTSINDEX                  | START_X | START_Y | END_X | END_Y | WIDTH | HEIGHT | AREA    | CENTER_X | CENTER_Y |
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-1             | android.widget.LinearLayout                       | c341256 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1600           | #XXXXXXXX | NOID                            | 8         |                               | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
-2             | android.view.ViewStub                             | 44632d7 | G          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | .                | 0                | 0                | 0              | 0              | #10201af  | android:id/action_mode_bar_stub | 10        | 1                             | 0       | 0       | 0     | 0     | 0     | 0      | 0       | 0        | 0        |
-3             | android.widget.FrameLayout                        | eab57c4 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1600           | #1020002  | android:id/content              | 10        | 1                             | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
-4             | android.widget.FrameLayout                        | 94a46ad | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1600           | #XXXXXXXX | NOID                            | 12        | 1|3                           | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
-5             | androidx.drawerlayout.widget.DrawerLayout         | cf6fde2 | V          | F         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 36               | 900            | 1600           | #7f0800af | app:id/drawer_layout            | 14        | 1|3|4                         | 0       | 36      | 900   | 1636  | 900   | 1600   | 1440000 | 450      | 836      |
-6             | com.bluestacks.launcher.widget.ItemOptionView     | d0f9b53 | V          | F         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | F             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1564           | #7f0800dd | app:id/item_option              | 16        | 1|3|4|5                       | 0       | 36      | 900   | 1600  | 900   | 1564   | 1407600 | 450      | 818      |
-7             | androidx.constraintlayout.widget.ConstraintLayout | 5512573 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1564           | #XXXXXXXX | NOID                            | 18        | 1|3|4|5|6                     | 0       | 36      | 900   | 1600  | 900   | 1564   | 1407600 | 450      | 818      |
-8             | android.widget.TextView                           | 6e82c30 | I          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | .                | 564              | 0                | 879            | 29             | #7f0800df | app:id/jpAdsRegulationText      | 20        | 1|3|4|5|6|7                   | 564     | 36      | 1443  | 65    | 879   | 29     | 25491   | 1003     | 50       |
-9             | android.widget.RelativeLayout                     | b71a0a9 | V          | F         | E       | .     | .                     | .                   | C         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 151              | 81               | 750            | 130            | #7f080134 | app:id/searchRelativeLayout     | 20        | 1|3|4|5|6|7                   | 151     | 117     | 901   | 247   | 750   | 130    | 97500   | 526      | 182      |
-10            | android.widget.ImageView                          | a0b162e | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 19               | 14               | 38             | 33             | #7f080133 | app:id/searchPlayIcon           | 22        | 1|3|4|5|6|7|9                 | 170     | 131     | 208   | 164   | 38    | 33     | 1254    | 189      | 147      |
-11            | android.widget.ImageView                          | d0ea5cf | V          | F         | E       | D     | .                     | .                   | C         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 561              | 14               | 580            | 33             | #7f080132 | app:id/searchIcon               | 22        | 1|3|4|5|6|7|9                 | 712     | 131     | 1292  | 164   | 580   | 33     | 19140   | 1002     | 147      |
-12            | android.widget.EditText                           | 2dbdb5c | V          | F         | E       | D     | .                     | .                   | C         | L              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 37               | 0                | 561            | 49             | #7f080131 | app:id/searchEditText           | 22        | 1|3|4|5|6|7|9                 | 188     | 117     | 749   | 166   | 561   | 49     | 27489   | 468      | 141      |
-13            | com.bluestacks.launcher.widget.Desktop            | 99a9e65 | V          | F         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 44               | 166              | 856            | 1254           | #7f08009c | app:id/desktop                  | 20        | 1|3|4|5|6|7                   | 44      | 202     | 900   | 1456  | 856   | 1254   | 1073424 | 472      | 829      |
-14            | com.bluestacks.launcher.widget.CellContainer      | a36673a | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 812            | 1088           | #XXXXXXXX | NOID                            | 22        | 1|3|4|5|6|7|13                | 44      | 202     | 856   | 1290  | 812   | 1088   | 883456  | 450      | 746      |
-15            | d1.b                                              | d79cfeb | V          | F         | E       | D     | .                     | .                   | C         | L              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 540              | 0                | 810            | 272            | #XXXXXXXX | NOID                            | 24        | 1|3|4|5|6|7|13|14             | 584     | 202     | 1394  | 474   | 810   | 272    | 220320  | 989      | 338      |
-16            | d1.b                                              | 4f95148 | V          | F         | E       | D     | .                     | .                   | C         | L              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 270            | 272            | #XXXXXXXX | NOID                            | 24        | 1|3|4|5|6|7|13|14             | 44      | 202     | 314   | 474   | 270   | 272    | 73440   | 179      | 338      |
-17            | d1.b                                              | a9bbbe1 | V          | F         | E       | D     | .                     | .                   | C         | L              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 270              | 0                | 540            | 272            | #XXXXXXXX | NOID                            | 24        | 1|3|4|5|6|7|13|14             | 314     | 202     | 854   | 474   | 540   | 272    | 146880  | 584      | 338      |
-18            | d1.b                                              | 893bd06 | V          | F         | E       | D     | .                     | .                   | C         | L              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 272              | 270            | 544            | #XXXXXXXX | NOID                            | 24        | 1|3|4|5|6|7|13|14             | 44      | 474     | 314   | 1018  | 270   | 544    | 146880  | 179      | 746      |
-19            | d1.b                                              | e5d1f2a | V          | F         | E       | D     | .                     | .                   | C         | L              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 270              | 272              | 540            | 544            | #XXXXXXXX | NOID                            | 24        | 1|3|4|5|6|7|13|14             | 314     | 474     | 854   | 1018  | 540   | 544    | 293760  | 584      | 746      |
-20            | com.bluestacks.launcher.widget.PagerIndicator     | 237351d | I          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 0                | 1254             | 900            | 1270           | #7f08009d | app:id/desktopIndicator         | 20        | 1|3|4|5|6|7                   | 0       | 1290    | 900   | 2560  | 900   | 1270   | 1143000 | 450      | 1925     |
-21            | android.widget.LinearLayout                       | 51ea392 | I          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 366              | 1270             | 535            | 1300           | #7f0800d9 | app:id/install_progress_layout  | 20        | 1|3|4|5|6|7                   | 366     | 1306    | 901   | 2606  | 535   | 1300   | 695500  | 633      | 1956     |
-22            | android.widget.ProgressBar                        | 8ce5163 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 10               | 7                | 25             | 22             | #7f0800ed | app:id/loadingBar               | 22        | 1|3|4|5|6|7|21                | 376     | 1313    | 401   | 1335  | 25    | 22     | 550     | 388      | 1324     |
-23            | android.widget.TextView                           | 2370160 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 35               | 4                | 159            | 25             | #7f0800da | app:id/installingGame           | 22        | 1|3|4|5|6|7|21                | 401     | 1310    | 560   | 1335  | 159   | 25     | 3975    | 480      | 1322     |
-24            | android.widget.LinearLayout                       | 4170619 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | -153             | 1331             | 1055           | 1564           | #7f0800a5 | app:id/dock                     | 20        | 1|3|4|5|6|7                   | -153    | 1367    | 902   | 2931  | 1055  | 1564   | 1650020 | 374      | 2149     |
-25            | android.widget.TextView                           | 1ff66de | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 9                | 1208           | 34             | #7f080119 | app:id/popular_gam              | 22        | 1|3|4|5|6|7|24                | -153    | 1376    | 1055  | 1410  | 1208  | 34     | 41072   | 451      | 1393     |
-26            | android.widget.FrameLayout                        | 8caa0bf | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 34               | 1208           | 233            | #7f0800bb | app:id/frameLayout              | 22        | 1|3|4|5|6|7|24                | -153    | 1401    | 1055  | 1634  | 1208  | 233    | 281464  | 451      | 1517     |
-27            | android.view.View                                 | dfad38c | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 83               | 1208           | 199            | #7f08017c | app:id/viewBackground           | 24        | 1|3|4|5|6|7|24|26             | -153    | 1484    | 1055  | 1683  | 1208  | 199    | 240392  | 451      | 1583     |
-28            | android.widget.FrameLayout                        | a88ead5 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 1208           | 199            | #XXXXXXXX | NOID                            | 24        | 1|3|4|5|6|7|24|26             | -153    | 1401    | 1055  | 1600  | 1208  | 199    | 240392  | 451      | 1500     |
-29            | android.widget.ProgressBar                        | 99712ea | G          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | .                | 589              | 84               | 619            | 114            | #7f0800a6 | app:id/dockLoadingBar           | 26        | 1|3|4|5|6|7|24|26|28          | 436     | 1485    | 1055  | 1599  | 619   | 114    | 70566   | 745      | 1542     |
-30            | android.widget.LinearLayout                       | 81289db | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 62               |                  | 8              | 175            | #7f080048 | app:id/allappsLinearLayout      | 26        | 1|3|4|5|6|7|24|26|28          | -91     | 1401    | -83   | 1576  | 8     | 175    | 1400    | -87      | 1488     |
-31            | android.widget.LinearLayout                       | 479c78  | V          | F         | E       | .     | .                     | .                   | C         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 66               | 0                | 384            | 183            | #7f080050 | app:id/appOneLinearLayout       | 28        | 1|3|4|5|6|7|24|26|28|30       | -25     | 1401    | 359   | 1584  | 384   | 183    | 70272   | 167      | 1492     |
-32            | android.widget.FrameLayout                        | cfa5f51 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 113              | 21               | 204            | 112            | #7f080058 | app:id/app_image_one            | 30        | 1|3|4|5|6|7|24|26|28|30|31    | 88      | 1422    | 292   | 1534  | 204   | 112    | 22848   | 190      | 1478     |
-33            | android.widget.ImageView                          | 94b73b6 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 65               | 3                | 88             | 26             | #7f08011c | app:id/popup_image_one          | 32        | 1|3|4|5|6|7|24|26|28|30|31|32 | 153     | 1425    | 241   | 1451  | 88    | 26     | 2288    | 197      | 1438     |
-34            | android.widget.TextView                           | 725e8b7 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 120              | 318            | 183            | #7f080060 | app:id/app_name_one             | 30        | 1|3|4|5|6|7|24|26|28|30|31    | -25     | 1521    | 293   | 1704  | 318   | 183    | 58194   | 134      | 1612     |
-35            | android.widget.LinearLayout                       | c960824 | V          | F         | E       | .     | .                     | .                   | C         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 384              | 0                | 701            | 183            | #7f080053 | app:id/appTwoLinearLayout       | 28        | 1|3|4|5|6|7|24|26|28|30       | 293     | 1401    | 994   | 1584  | 701   | 183    | 128283  | 643      | 1492     |
-36            | android.widget.FrameLayout                        | 2349f8d | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 113              | 21               | 204            | 112            | #7f08005b | app:id/app_image_two            | 30        | 1|3|4|5|6|7|24|26|28|30|35    | 406     | 1422    | 610   | 1534  | 204   | 112    | 22848   | 508      | 1478     |
-37            | android.widget.ImageView                          | d131542 | I          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 65               | 3                | 88             | 26             | #7f08011f | app:id/popup_image_two          | 32        | 1|3|4|5|6|7|24|26|28|30|35|36 | 471     | 1425    | 559   | 1451  | 88    | 26     | 2288    | 515      | 1438     |
-38            | android.widget.TextView                           | 4a65953 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 120              | 317            | 183            | #7f080063 | app:id/app_name_two             | 30        | 1|3|4|5|6|7|24|26|28|30|35    | 293     | 1521    | 610   | 1704  | 317   | 183    | 58011   | 451      | 1612     |
-39            | android.widget.LinearLayout                       | 33d8290 | V          | F         | E       | .     | .                     | .                   | C         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 701              | 0                | 1018           | 183            | #7f080052 | app:id/appThreeLinearLayout     | 28        | 1|3|4|5|6|7|24|26|28|30       | 610     | 1401    | 1628  | 1584  | 1018  | 183    | 186294  | 1119     | 1492     |
-40            | android.widget.FrameLayout                        | a58a789 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 113              | 21               | 204            | 112            | #7f08005a | app:id/app_image_three          | 30        | 1|3|4|5|6|7|24|26|28|30|39    | 723     | 1422    | 927   | 1534  | 204   | 112    | 22848   | 825      | 1478     |
-41            | android.widget.ImageView                          | 7c1438e | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 65               | 3                | 88             | 26             | #7f08011e | app:id/popup_image_three        | 32        | 1|3|4|5|6|7|24|26|28|30|39|40 | 788     | 1425    | 876   | 1451  | 88    | 26     | 2288    | 832      | 1438     |
-42            | android.widget.TextView                           | db337af | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 120              | 317            | 183            | #7f080062 | app:id/app_name_three           | 30        | 1|3|4|5|6|7|24|26|28|30|39    | 610     | 1521    | 927   | 1704  | 317   | 183    | 58011   | 768      | 1612     |
-43            | android.widget.LinearLayout                       | a037bc  | G          | F         | E       | .     | .                     | .                   | C         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 543              | 0                | 702            | 183            | #7f08004f | app:id/appFourLinearLayout      | 28        | 1|3|4|5|6|7|24|26|28|30       | 452     | 1401    | 1154  | 1584  | 702   | 183    | 128466  | 803      | 1492     |
-44            | android.widget.FrameLayout                        | c9b3345 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 34               | 21               | 125            | 112            | #7f080057 | app:id/app_image_four           | 30        | 1|3|4|5|6|7|24|26|28|30|43    | 486     | 1422    | 611   | 1534  | 125   | 112    | 14000   | 548      | 1478     |
-45            | android.widget.ImageView                          | 4120a9a | I          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 65               | 3                | 88             | 26             | #7f08011b | app:id/popup_image_four         | 32        | 1|3|4|5|6|7|24|26|28|30|43|44 | 551     | 1425    | 639   | 1451  | 88    | 26     | 2288    | 595      | 1438     |
-46            | android.widget.TextView                           | 8059fcb | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 0                | 120              | 159            | 183            | #7f08005f | app:id/app_name_four            | 30        | 1|3|4|5|6|7|24|26|28|30|43    | 452     | 1521    | 611   | 1704  | 159   | 183    | 29097   | 531      | 1612     |
-47            | android.widget.LinearLayout                       | 31713a8 | G          | F         | E       | .     | .                     | .                   | C         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 702              | 0                | 860            | 183            | #7f08004e | app:id/appFiveLinearLayout      | 28        | 1|3|4|5|6|7|24|26|28|30       | 611     | 1401    | 1471  | 1584  | 860   | 183    | 157380  | 1041     | 1492     |
-48            | android.widget.FrameLayout                        | 4c0bec1 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 33               | 21               | 124            | 112            | #7f080056 | app:id/app_image_five           | 30        | 1|3|4|5|6|7|24|26|28|30|47    | 644     | 1422    | 768   | 1534  | 124   | 112    | 13888   | 706      | 1478     |
-49            | android.widget.ImageView                          | a763666 | I          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 65               | 3                | 88             | 26             | #7f08011a | app:id/popup_image_five         | 32        | 1|3|4|5|6|7|24|26|28|30|47|48 | 709     | 1425    | 797   | 1451  | 88    | 26     | 2288    | 753      | 1438     |
-50            | android.widget.TextView                           | 1cc6da7 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 0                | 120              | 158            | 183            | #7f08005e | app:id/app_name_five            | 30        | 1|3|4|5|6|7|24|26|28|30|47    | 611     | 1521    | 769   | 1704  | 158   | 183    | 28914   | 690      | 1612     |
-51            | android.widget.LinearLayout                       | 39dc254 | G          | F         | E       | .     | .                     | .                   | C         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 860              | 0                | 1018           | 183            | #7f080051 | app:id/appSixLinearLayout       | 28        | 1|3|4|5|6|7|24|26|28|30       | 769     | 1401    | 1787  | 1584  | 1018  | 183    | 186294  | 1278     | 1492     |
-52            | android.widget.FrameLayout                        | c5985fd | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 33               | 21               | 124            | 112            | #7f080059 | app:id/app_image_six            | 30        | 1|3|4|5|6|7|24|26|28|30|51    | 802     | 1422    | 926   | 1534  | 124   | 112    | 13888   | 864      | 1478     |
-53            | android.widget.ImageView                          | 79f52f2 | I          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 65               | 3                | 88             | 26             | #7f08011d | app:id/popup_image_six          | 32        | 1|3|4|5|6|7|24|26|28|30|51|52 | 867     | 1425    | 955   | 1451  | 88    | 26     | 2288    | 911      | 1438     |
-54            | android.widget.TextView                           | 3483d43 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 0                | 120              | 158            | 183            | #7f080061 | app:id/app_name_six             | 30        | 1|3|4|5|6|7|24|26|28|30|51    | 769     | 1521    | 927   | 1704  | 158   | 183    | 28914   | 848      | 1612     |
-55            | com.bluestacks.launcher.widget.GroupPopupView     | d3eafc0 | I          | F         | E       | .     | .                     | .                   | C         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 0                | 0                | 900            | 1564           | #7f0800c2 | app:id/groupPopup               | 20        | 1|3|4|5|6|7                   | 0       | 36      | 900   | 1600  | 900   | 1564   | 1407600 | 450      | 818      |
-56            | androidx.cardview.widget.CardView                 | 95ef22f | I          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 0                | 0                | 791            | 461            | #XXXXXXXX | NOID                            | 22        | 1|3|4|5|6|7|55                | 0       | 36      | 791   | 497   | 791   | 461    | 364651  | 395      | 266      |
-57            | android.widget.LinearLayout                       | bbd84f9 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 6                | 6                | 785            | 455            | #XXXXXXXX | NOID                            | 24        | 1|3|4|5|6|7|55|56             | 6       | 42      | 791   | 497   | 785   | 455    | 357175  | 398      | 269      |
-58            | android.widget.TextView                           | fcbac3e | V          | F         | E       | D     | .                     | .                   | C         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 25               | 20               | 779            | 63             | #7f0800c4 | app:id/group_popup_label        | 26        | 1|3|4|5|6|7|55|56|57          | 31      | 62      | 810   | 125   | 779   | 63     | 49077   | 420      | 93       |
-59            | com.bluestacks.launcher.widget.CellContainer      | e276a9f | I          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | D                | 37               | 63               | 742            | 429            | #7f0800c1 | app:id/group                    | 26        | 1|3|4|5|6|7|55|56|57          | 43      | 105     | 785   | 534   | 742   | 429    | 318318  | 414      | 319      |
-60            | android.view.View                                 | f3f07ec | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 44               | 166              | 82             | 1254           | #7f0800e4 | app:id/leftDragHandle           | 20        | 1|3|4|5|6|7                   | 44      | 202     | 126   | 1456  | 82    | 1254   | 102828  | 85       | 829      |
-61            | android.view.View                                 | ec877b5 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 818              | 166              | 856            | 1254           | #7f080129 | app:id/rightDragHandle          | 20        | 1|3|4|5|6|7                   | 818     | 202     | 1674  | 1456  | 856   | 1254   | 1073424 | 1246     | 829      |
-62            | com.bluestacks.launcher.widget.ItemOptionView$c   | ad24e4a | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1564           | #XXXXXXXX | NOID                            | 18        | 1|3|4|5|6                     | 0       | 36      | 900   | 1600  | 900   | 1564   | 1407600 | 450      | 818      |
-```
-## Uiautomator dump as TSV (Tab-separated values)
-```sh
-sh /sdcard/uidumpparser/u.sh > /sdcard/u.txt
-awk -f /sdcard/awk_pretty_print.awk /sdcard/u.txt
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height |
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
-0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
-0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
-0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
-0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   |
-0     |                            | com.bluestacks.launcher:id/item_option          | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | true      | true    | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   |
-0     |                            |                                                 | android.view.View                         | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   |
-1     |                            |                                                 | android.view.ViewGroup                    | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   |
-0     |                            | com.bluestacks.launcher:id/searchRelativeLayout | android.widget.RelativeLayout             | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | false          | false    | false    | 151    | 750  | 117    | 166  | 450     | 141     | 29351   | 599   | 49     |
-0     |                            | com.bluestacks.launcher:id/searchPlayIcon       | android.widget.ImageView                  | com.bluestacks.launcher | searchbar    | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 170    | 189  | 131    | 150  | 179     | 140     | 361     | 19    | 19     |
-1     |                            | com.bluestacks.launcher:id/searchEditText       | android.widget.EditText                   | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | true           | false    | false    | 188    | 712  | 117    | 166  | 450     | 141     | 25676   | 524   | 49     |
-2     |                            | com.bluestacks.launcher:id/searchIcon           | android.widget.ImageView                  | com.bluestacks.launcher | searchbar    | false     | false   | true      | true    | true      | false   | false      | false          | false    | false    | 712    | 731  | 131    | 150  | 721     | 140     | 361     | 19    | 19     |
-1     |                            | com.bluestacks.launcher:id/desktop              | androidx.viewpager.widget.b               | com.bluestacks.launcher |              | false     | false   | false     | true    | true      | false   | false      | false          | false    | false    | 44     | 856  | 202    | 1290 | 450     | 746     | 883456  | 812   | 1088   |
-0     |                            |                                                 | android.view.ViewGroup                    | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 44     | 856  | 202    | 1290 | 450     | 746     | 883456  | 812   | 1088   |
-0     |                            |                                                 | android.view.View                         | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | true           | false    | false    | 44     | 314  | 202    | 474  | 179     | 338     | 73440   | 270   | 272    |
-1     |                            |                                                 | android.view.View                         | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | true           | false    | false    | 314    | 584  | 202    | 474  | 449     | 338     | 73440   | 270   | 272    |
-2     |                            |                                                 | android.view.View                         | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | true           | false    | false    | 584    | 854  | 202    | 474  | 719     | 338     | 73440   | 270   | 272    |
-3     |                            |                                                 | android.view.View                         | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | true           | false    | false    | 44     | 314  | 474    | 746  | 179     | 610     | 73440   | 270   | 272    |
-4     |                            |                                                 | android.view.View                         | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | true           | false    | false    | 314    | 584  | 474    | 746  | 449     | 610     | 73440   | 270   | 272    |
-2     |                            | com.bluestacks.launcher:id/dock                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 1367   | 1600 | 450     | 1483    | 209700  | 900   | 233    |
-0     | JOGOS POPULARES PARA JOGAR | com.bluestacks.launcher:id/popular_gam          | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 1376   | 1401 | 450     | 1388    | 22500   | 900   | 25     |
-1     |                            | com.bluestacks.launcher:id/frameLayout          | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 1401   | 1600 | 450     | 1500    | 179100  | 900   | 199    |
-0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 1401   | 1600 | 450     | 1500    | 179100  | 900   | 199    |
-0     |                            | com.bluestacks.launcher:id/allappsLinearLayout  | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 1401   | 1576 | 450     | 1488    | 157500  | 900   | 175    |
-0     |                            | com.bluestacks.launcher:id/appOneLinearLayout   | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | false          | false    | false    | 0      | 293  | 1401   | 1576 | 146     | 1488    | 51275   | 293   | 175    |
-0     |                            | com.bluestacks.launcher:id/app_image_one        | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 88     | 179  | 1414   | 1505 | 133     | 1459    | 8281    | 91    | 91     |
-0     |                            | com.bluestacks.launcher:id/popup_image_one      | android.widget.ImageView                  | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 153    | 176  | 1417   | 1440 | 164     | 1428    | 529     | 23    | 23     |
-1     | Dragonheir: Silent Gods    | com.bluestacks.launcher:id/app_name_one         | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 293  | 1513   | 1576 | 146     | 1544    | 18459   | 293   | 63     |
-1     |                            | com.bluestacks.launcher:id/appTwoLinearLayout   | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | false          | false    | false    | 293    | 610  | 1401   | 1576 | 451     | 1488    | 55475   | 317   | 175    |
-0     |                            | com.bluestacks.launcher:id/app_image_two        | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 406    | 497  | 1414   | 1505 | 451     | 1459    | 8281    | 91    | 91     |
-1     | Call of Dragons            | com.bluestacks.launcher:id/app_name_two         | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 293    | 610  | 1513   | 1576 | 451     | 1544    | 19971   | 317   | 63     |
-2     |                            | com.bluestacks.launcher:id/appThreeLinearLayout | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | false          | false    | false    | 610    | 900  | 1401   | 1576 | 755     | 1488    | 50750   | 290   | 175    |
-0     |                            | com.bluestacks.launcher:id/app_image_three      | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 723    | 814  | 1414   | 1505 | 768     | 1459    | 8281    | 91    | 91     |
-0     |                            | com.bluestacks.launcher:id/popup_image_three    | android.widget.ImageView                  | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 788    | 811  | 1417   | 1440 | 799     | 1428    | 529     | 23    | 23     |
-1     | Eternal Fury               | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     |
-1     |                            | com.bluestacks.launcher:id/viewBackground       | android.view.View                         | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 1484   | 1600 | 450     | 1542    | 104400  | 900   | 116    |
-
+1             | android.widget.LinearLayout                       | b0890e3 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1600           | NADA      | NADA                            | 8         |                               | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
+2             | android.view.ViewStub                             | 15d0ae0 | G          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | .                | 0                | 0                | 0              | 0              | #10201af  | android:id/action_mode_bar_stub | 10        | 1                             | 0       | 0       | 0     | 0     | 0     | 0      | 0       | 0        | 0        |
+3             | android.widget.FrameLayout                        | 72e1199 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1600           | #1020002  | android:id/content              | 10        | 1                             | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
+4             | android.widget.FrameLayout                        | d504c5e | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1600           | NADA      | NADA                            | 12        | 1|3                           | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
+5             | androidx.drawerlayout.widget.DrawerLayout         | 129583f | V          | F         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 36               | 900            | 1600           | #7f0800af | app:id/drawer_layout            | 14        | 1|3|4                         | 0       | 36      | 900   | 1600  | 900   | 1564   | 1407600 | 450      | 818      |
+...
+12            | android.widget.EditText                           | 6238936 | V          | F         | E       | D     | .                     | .                   | C         | L              | .                 | .                       | F             | .              | .                | .             | .               | .                 | .                | 37               | 0                | 561            | 49             | #7f080131 | app:id/searchEditText           | 22        | 1|3|4|5|6|7|9                 | 188     | 117     | 712   | 166   | 524   | 49     | 25676   | 450      | 141      |
+....
 ```
 
-## localize elements
-
-### The idea is using awk like pandas here: https://github.com/hansalemaos/usefuladbplus
-
+## get a fragment dump with pretty print and limit the max print width to 15
 ```sh
-sh /sdcard/uidumpparser/u.sh > /sdcard/u.txt
-awk -f /sdcard/awkloc/aloc.awk -v query="width>>300|height>>90|class~~view" -v sep="|" -v and=1 ./sdcard/u.txt
+sh /sdcard/fragmentparser/awkparser.sh  | awk -f /sdcard/printer/awk_pretty_print.awk -v m=15
+
+ELEMENT_INDEX | CLASSNAME       | MID     | VISIBILITY | FOCUSABLE | ENABLED | DRAWN | SCROLLBARS_HORI | SCROLLBARS_VERT | CLICKABLE | LONG_CLICKABLE | CONTEXT_CLICKAB | PFLAG_IS_ROOT_N | PFLAG_FOCUSED | PFLAG_SELECTED | PFLAG_PREPRESSE | PFLAG_HOVERED | PFLAG_ACTIVATED | PFLAG_INVALIDAT | PFLAG_DIRTY_MAS | START_X_RELATIV | START_Y_RELATIV | END_X_RELATIVE | END_Y_RELATIVE | HASHCODE  | ELEMENT_ID      | IS_ACTIVE | PARENTSINDEX    | START_X | START_Y | END_X | END_Y | WIDTH | HEIGHT | AREA    | CENTER_X | CENTER_Y |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | android.widget. | b0890e3 | V          | .         | E       | .     | .               | .               | .         | .              | .               | .               | .             | .              | .               | .             | .               | .               | .               | 0               | 0               | 900            | 1600           | NADA      | NADA            | 8         |                 | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
+2             | android.view.Vi | 15d0ae0 | G          | .         | E       | .     | .               | .               | .         | .              | .               | .               | .             | .              | .               | .             | .               | I               | .               | 0               | 0               | 0              | 0              | #10201af  | android:id/acti | 10        | 1               | 0       | 0       | 0     | 0     | 0     | 0      | 0       | 0        | 0        |
+3             | android.widget. | 72e1199 | V          | .         | E       | .     | .               | .               | .         | .              | .               | .               | .             | .              | .               | .             | .               | .               | .               | 0               | 0               | 900            | 1600           | #1020002  | android:id/cont | 10        | 1               | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
+4             | android.widget. | d504c5e | V          | .         | E       | .     | .               | .               | .         | .              | .               | .               | .             | .              | .               | .             | .               | .               | .               | 0               | 0               | 900            | 1600           | NADA      | NADA            | 12        | 1|3             | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
+5             | androidx.drawer | 129583f | V          | F         | E       | .     | .               | .               | .         | .              | .               | .               | .             | .              | .               | .             | .               | .               | .               | 0               | 36              | 900            | 1600           | #7f0800af | app:id/drawer_l | 14        | 1|3|4           | 0       | 36      | 900   | 1600  | 900   | 1564   | 1407600 | 450      | 818      |
+...
+11            | android.widget. | 3775ad1 | V          | F         | E       | D     | .               | .               | C         | .              | .               | .               | .             | .              | .               | .             | .               | .               | .               | 561             | 14              | 580            | 33             | #7f080132 | app:id/searchIc | 22        | 1|3|4|5|6|7|9   | 712     | 131     | 731   | 150   | 19    | 19     | 361     | 721      | 140      |
+...
+```
+
+## get uiautomator dump with 10 seconds timeout (default to 60)
+```sh
+sh /sdcard/elementparser/elementparser.sh 10
+
+element_index   index   text    resource-id     class   package content-desc    checkable       checked clickable       enabled focusable       focused scrollable      long-clickable  password        selected        startx  endx    starty  endy    centerx centery area    width   height
+1       0                       android.widget.FrameLayout      com.bluestacks.launcher         false   false   false   true    false   false   false   false   false   false   0       900     0       1600    450     800     1440000 900     1600
+2       0                       android.widget.LinearLayout     com.bluestacks.launcher         false   false   false   true    false   false   false   false   false   false   0       900     0       1600    450     800     1440000 900     1600
+3       0               android:id/content      android.widget.FrameLayout      com.bluestacks.launcher         false   false   false   true    false   false   false   false   false   false   0       900     0       1600    450     800     1440000 900     1600
+```
+
+## get uiautomator dump with pretty print 
+```sh
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/printer/awk_pretty_print.awk
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   |
+...
+11            | 1     |                            | com.bluestacks.launcher:id/searchEditText       | android.widget.EditText                   | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | true    | false      | true           | false    | false    | 188    | 712  | 117    | 166  | 450     | 141     | 25676   | 524   | 49     |
+...
+```
+
+# localize items 
+
+## query uiautomator
+```sh
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/loc/aloc.awk -v query="width>>300|height>>90|class~~view" -v sep="|" -v and=1 | awk -f /sdcard/printer/awk_pretty_print.awk
 # width >> 300: Selects rows where the value in the "width" column is greater than 300.
 # height >> 90: Selects rows where the value in the "height" column is greater than 90.
 # class ~~ view: Selects rows where the "class" column matches the regular expression "view".
+# and=1: all conditions must be true
+# sep="|": to separate the query
 
-awk -f /sdcard/awkloc/aloc.awk -v query="width>>300|height>>90|class~~view" -v sep="|" -v and=0 ./sdcard/u.txt
-# Similar to the previous query, but any condition can match independently for a row to be included in the output.
+# All operators 
+#">=" == GE
+#"<=" == LE
+#"!=" == NE
+#">>" == GT
+#"<<" == LT
+#"==" == EQ
+#"~~" == REGEX
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text | resource-id                               | class                       | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+7             | 0     |      |                                           | android.view.View           | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   |
+8             | 1     |      |                                           | android.view.ViewGroup      | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   |
+13            | 1     |      | com.bluestacks.launcher:id/desktop        | androidx.viewpager.widget.b | com.bluestacks.launcher |              | false     | false   | false     | true    | true      | false   | false      | false          | false    | false    | 44     | 856  | 202    | 1290 | 450     | 746     | 883456  | 812   | 1088   |
+14            | 0     |      |                                           | android.view.ViewGroup      | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 44     | 856  | 202    | 1290 | 450     | 746     | 883456  | 812   | 1088   |
+37            | 1     |      | com.bluestacks.launcher:id/viewBackground | android.view.View           | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 1484   | 1600 | 450     | 1542    | 104400  | 900   | 116    |
+```
 
-awk -f /sdcard/awkloc/aloc.awk -v query="width>>300|height>>90|class~~view|enabled==false" -v sep="|" -v and=0 ./sdcard/u.txt
-# Similar to the first query, but adds an extra condition:
-# enabled == false: Selects rows where the value in the "enabled" column is equal to "false".
+## piped query uiautomator
+```sh
 
-awk -f /sdcard/awkloc/aloc.awk -v query="width>>300#height>>90#class~~view#enabled==false#area>=0#starty<=10000" ./sdcard/u.txt
-# width > 300, height > 90, class ~ view, enabled == false, area >= 0, starty <= 10000: Selects rows meeting one of these # conditions.
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/loc/aloc.awk -v query="width>>300|height>>90|class~~view" -v sep="|" -v and=1 | awk -f /sdcard/loc/aloc.awk -v query="startx>>41#starty<<100" -v and=0 | awk -f /sdcard/printer/awk_pretty_print.awk
+
+# awk -f /sdcard/loc/aloc.awk -v query="startx>>41#starty<<100" -v and=0
+# and=0 means that either startx>41 or starty<100 must be true
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text | resource-id                        | class                       | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height |
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+7             | 0     |      |                                    | android.view.View           | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   |
+8             | 1     |      |                                    | android.view.ViewGroup      | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   |
+13            | 1     |      | com.bluestacks.launcher:id/desktop | androidx.viewpager.widget.b | com.bluestacks.launcher |              | false     | false   | false     | true    | true      | false   | false      | false          | false    | false    | 44     | 856  | 202    | 1290 | 450     | 746     | 883456  | 812   | 1088   |
+14            | 0     |      |                                    | android.view.ViewGroup      | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 44     | 856  | 202    | 1290 | 450     | 746     | 883456  | 812   | 1088   |
+```
+
+## query fragments 
+```sh
+sh /sdcard/fragmentparser/awkparser.sh | awk -f /sdcard/loc/aloc.awk -v query="VISIBILITY==V#CLASSNAME~~.*View$" -v and=1 | awk -f /sdcard/printer/awk_pretty_print.awk
+
+# query where VISIBILITY==V and CLASSNAME matches the regex *View$
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ELEMENT_INDEX | CLASSNAME                                     | MID     | VISIBILITY | FOCUSABLE | ENABLED | DRAWN | SCROLLBARS_HORIZONTAL | SCROLLBARS_VERTICAL | CLICKABLE | LONG_CLICKABLE | CONTEXT_CLICKABLE | PFLAG_IS_ROOT_NAMESPACE | PFLAG_FOCUSED | PFLAG_SELECTED | PFLAG_PREPRESSED | PFLAG_HOVERED | PFLAG_ACTIVATED | PFLAG_INVALIDATED | PFLAG_DIRTY_MASK | START_X_RELATIVE | START_Y_RELATIVE | END_X_RELATIVE | END_Y_RELATIVE | HASHCODE  | ELEMENT_ID               | IS_ACTIVE | PARENTSINDEX                  | START_X | START_Y | END_X | END_Y | WIDTH | HEIGHT | AREA    | CENTER_X | CENTER_Y |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+6             | com.bluestacks.launcher.widget.ItemOptionView | 737f50c | V          | F         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1564           | #7f0800dd | app:id/item_option       | 16        | 1|3|4|5                       | 0       | 36      | 900   | 1600  | 900   | 1564   | 1407600 | 450      | 818      |
+10            | android.widget.ImageView                      | 9f555f8 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 19               | 14               | 38             | 33             | #7f080133 | app:id/searchPlayIcon    | 22        | 1|3|4|5|6|7|9                 | 170     | 131     | 189   | 150   | 19    | 19     | 361     | 179      | 140      |
+11            | android.widget.ImageView                      | 3775ad1 | V          | F         | E       | D     | .                     | .                   | C         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 561              | 14               | 580            | 33             | #7f080132 | app:id/searchIcon        | 22        | 1|3|4|5|6|7|9                 | 712     | 131     | 731   | 150   | 19    | 19     | 361     | 721      | 140      |
+24            | android.widget.TextView                       | 42f56c5 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | I                 | .                | 35               | 4                | 159            | 25             | #7f0800da | app:id/installingGame    | 22        | 1|3|4|5|6|7|22                | 401     | 1310    | 525   | 1331  | 124   | 21     | 2604    | 463      | 1320     |
+26            | android.widget.TextView                       | 8232f4b | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 9                | 1208           | 34             | #7f080119 | app:id/popular_gam       | 22        | 1|3|4|5|6|7|25                | -153    | 1376    | 1055  | 1401  | 1208  | 25     | 30200   | 451      | 1388     |
+...
+59            | android.widget.TextView                       | 65f5f88 | V          | F         | E       | D     | .                     | .                   | C         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 25               | 20               | 779            | 63             | #7f0800c4 | app:id/group_popup_label | 26        | 1|3|4|5|6|7|56|57|58          | 31      | 62      | 785   | 105   | 754   | 43     | 32422   | 408      | 83       |
+
+```
+
+## piped query fragments
+```sh
+ sh /sdcard/fragmentparser/awkparser.sh | awk -f /sdcard/loc/aloc.awk -v query="VISIBILITY==V#CLASSNAME~~.*View$" -v and=1 | awk -f /sdcard/loc/aloc.awk -v query="HEIGHT>>100#WIDTH<<100" -v and=0 | awk -f /sdcard/printer/awk_pretty_print.awk
+
+# query where VISIBILITY==V and CLASSNAME matches the regex *View$
+# and where HEIGHT is greater than 100 or WIDTH is less than 100
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ELEMENT_INDEX | CLASSNAME                                     | MID     | VISIBILITY | FOCUSABLE | ENABLED | DRAWN | SCROLLBARS_HORIZONTAL | SCROLLBARS_VERTICAL | CLICKABLE | LONG_CLICKABLE | CONTEXT_CLICKABLE | PFLAG_IS_ROOT_NAMESPACE | PFLAG_FOCUSED | PFLAG_SELECTED | PFLAG_PREPRESSED | PFLAG_HOVERED | PFLAG_ACTIVATED | PFLAG_INVALIDATED | PFLAG_DIRTY_MASK | START_X_RELATIVE | START_Y_RELATIVE | END_X_RELATIVE | END_Y_RELATIVE | HASHCODE  | ELEMENT_ID               | IS_ACTIVE | PARENTSINDEX                  | START_X | START_Y | END_X | END_Y | WIDTH | HEIGHT | AREA    | CENTER_X | CENTER_Y |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+6             | com.bluestacks.launcher.widget.ItemOptionView | 737f50c | V          | F         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1564           | #7f0800dd | app:id/item_option       | 16        | 1|3|4|5                       | 0       | 36      | 900   | 1600  | 900   | 1564   | 1407600 | 450      | 818      |
+10            | android.widget.ImageView                      | 9f555f8 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 19               | 14               | 38             | 33             | #7f080133 | app:id/searchPlayIcon    | 22        | 1|3|4|5|6|7|9                 | 170     | 131     | 189   | 150   | 19    | 19     | 361     | 179      | 140      |
+11            | android.widget.ImageView                      | 3775ad1 | V          | F         | E       | D     | .                     | .                   | C         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 561              | 14               | 580            | 33             | #7f080132 | app:id/searchIcon        | 22        | 1|3|4|5|6|7|9                 | 712     | 131     | 731   | 150   | 19    | 19     | 361     | 721      | 140      |
+28            | android.view.View                             | 8339a41 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 83               | 1208           | 199            | #7f08017c | app:id/viewBackground    | 24        | 1|3|4|5|6|7|25|27             | -153    | 1484    | 1055  | 1600  | 1208  | 116    | 140128  | 451      | 1542     |
+34            | android.widget.ImageView                      | 8983cc3 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 65               | 3                | 88             | 26             | #7f08011c | app:id/popup_image_one   | 32        | 1|3|4|5|6|7|25|27|29|31|32|33 | 153     | 1417    | 176   | 1440  | 23    | 23     | 529     | 164      | 1428     |
+...
+61            | android.view.View                             | 4821546 | V          | .         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 44               | 166              | 82             | 1254           | #7f0800e4 | app:id/leftDragHandle    | 20        | 1|3|4|5|6|7                   | 44      | 202     | 82    | 1290  | 38    | 1088   | 41344   | 63       | 746      |
+
+```
+
+## more examples 
+```sh
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/loc/aloc.awk -v query="width>>300#height>>90#class~~view#enabled==false#area>=0#starty<=10000" | awk -f /sdcard/printer/awk_pretty_print.awk
+# Selects rows meeting one of these # conditions: width > 300, height > 90, class ~ view, enabled == false, area >= 0, starty <= 10000
 # default separator (#) is used between conditions.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   |
+...
+13            | 1     |                            | com.bluestacks.launcher:id/desktop              | androidx.viewpager.widget.b               | com.bluestacks.launcher |              | false     | false   | false     | true    | true      | false   | false      | false          | false    | false    | 44     | 856  | 202    | 1290 | 450     | 746     | 883456  | 812   | 1088   |
 
-sh /sdcard/activityparser/awkparser.sh > /sdcard/a.txt
-awk -f /sdcard/awkloc/aloc.awk -v query="CLASSNAME~~widget|HEIGHT>>90|VISIBILITY==V" -v sep="|" -v and=1 ./sdcard/a.txt
-awk -f /sdcard/awkloc/aloc.awk -v query="CLASSNAME~~widget|HEIGHT>>90|VISIBILITY==V" -v sep="|" -v and=0 ./sdcard/a.txt
-# CLASSNAME ~~ widget: Selects rows where the "CLASSNAME" column matches the regular expression "widget".
+
+
+
+sh /sdcard/fragmentparser/awkparser.sh | awk -f /sdcard/loc/aloc.awk -v query="CLASSNAME~~.*widget.*|HEIGHT>>90|VISIBILITY==V" -v sep="|" -v and=1 | awk -f /sdcard/printer/awk_pretty_print.awk
+# CLASSNAME ~~ widget: Selects rows where the "CLASSNAME" column matches the regular expression ".*widget.*".
 # HEIGHT >> 90: Selects rows where the value in the "HEIGHT" column is greater than 90.
 # VISIBILITY == V: Selects rows where the value in the "VISIBILITY" column is equal to "V".
 # and=1: all conditions must be met
 # and=0: any condition must be met
-```
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ELEMENT_INDEX | CLASSNAME                                         | MID     | VISIBILITY | FOCUSABLE | ENABLED | DRAWN | SCROLLBARS_HORIZONTAL | SCROLLBARS_VERTICAL | CLICKABLE | LONG_CLICKABLE | CONTEXT_CLICKABLE | PFLAG_IS_ROOT_NAMESPACE | PFLAG_FOCUSED | PFLAG_SELECTED | PFLAG_PREPRESSED | PFLAG_HOVERED | PFLAG_ACTIVATED | PFLAG_INVALIDATED | PFLAG_DIRTY_MASK | START_X_RELATIVE | START_Y_RELATIVE | END_X_RELATIVE | END_Y_RELATIVE | HASHCODE  | ELEMENT_ID                  | IS_ACTIVE | PARENTSINDEX               | START_X | START_Y | END_X | END_Y | WIDTH | HEIGHT | AREA    | CENTER_X | CENTER_Y |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | android.widget.LinearLayout                       | b0890e3 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1600           | NADA      | NADA                        | 8         |                            | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
+3             | android.widget.FrameLayout                        | 72e1199 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1600           | #1020002  | android:id/content          | 10        | 1                          | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
+4             | android.widget.FrameLayout                        | d504c5e | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1600           | NADA      | NADA                        | 12        | 1|3                        | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
+5             | androidx.drawerlayout.widget.DrawerLayout         | 129583f | V          | F         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 36               | 900            | 1600           | #7f0800af | app:id/drawer_layout        | 14        | 1|3|4                      | 0       | 36      | 900   | 1600  | 900   | 1564   | 1407600 | 450      | 818      |
+6             | com.bluestacks.launcher.widget.ItemOptionView     | 737f50c | V          | F         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1564           | #7f0800dd | app:id/item_option          | 16        | 1|3|4|5                    | 0       | 36      | 900   | 1600  | 900   | 1564   | 1407600 | 450      | 818      |
+...
+25            | android.widget.LinearLayout                       | 5f6281a | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | -153             | 1331             | 1055           | 1564           | #7f0800a5 | app:id/dock                 | 20        | 1|3|4|5|6|7                | -153    | 1367    | 1055  | 1600  | 1208  | 233    | 281464  | 451      | 1483     |
 
-## Some image stuff 
+sh /sdcard/fragmentparser/awkparser.sh | awk -f /sdcard/loc/aloc.awk -v query="CLASSNAME~~.*widget.*|HEIGHT>>90|VISIBILITY==V" -v sep="|" -v and=0 | awk -f /sdcard/printer/awk_pretty_print.awk
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ELEMENT_INDEX | CLASSNAME                                         | MID     | VISIBILITY | FOCUSABLE | ENABLED | DRAWN | SCROLLBARS_HORIZONTAL | SCROLLBARS_VERTICAL | CLICKABLE | LONG_CLICKABLE | CONTEXT_CLICKABLE | PFLAG_IS_ROOT_NAMESPACE | PFLAG_FOCUSED | PFLAG_SELECTED | PFLAG_PREPRESSED | PFLAG_HOVERED | PFLAG_ACTIVATED | PFLAG_INVALIDATED | PFLAG_DIRTY_MASK | START_X_RELATIVE | START_Y_RELATIVE | END_X_RELATIVE | END_Y_RELATIVE | HASHCODE  | ELEMENT_ID                     | IS_ACTIVE | PARENTSINDEX                  | START_X | START_Y | END_X | END_Y | WIDTH | HEIGHT | AREA    | CENTER_X | CENTER_Y |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | android.widget.LinearLayout                       | b0890e3 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1600           | NADA      | NADA                           | 8         |                               | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
+3             | android.widget.FrameLayout                        | 72e1199 | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1600           | #1020002  | android:id/content             | 10        | 1                             | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
+4             | android.widget.FrameLayout                        | d504c5e | V          | .         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1600           | NADA      | NADA                           | 12        | 1|3                           | 0       | 0       | 900   | 1600  | 900   | 1600   | 1440000 | 450      | 800      |
+5             | androidx.drawerlayout.widget.DrawerLayout         | 129583f | V          | F         | E       | .     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 36               | 900            | 1600           | #7f0800af | app:id/drawer_layout           | 14        | 1|3|4                         | 0       | 36      | 900   | 1600  | 900   | 1564   | 1407600 | 450      | 818      |
+6             | com.bluestacks.launcher.widget.ItemOptionView     | 737f50c | V          | F         | E       | D     | .                     | .                   | .         | .              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 0                | 0                | 900            | 1564           | #7f0800dd | app:id/item_option             | 16        | 1|3|4|5                       | 0       | 36      | 900   | 1600  | 900   | 1564   | 1407600 | 450      | 818      |
+...
+17            | d1.b                                              | faf78d3 | V          | F         | E       | D     | .                     | .                   | C         | L              | .                 | .                       | .             | .              | .                | .             | .               | .                 | .                | 270              | 0                | 540            | 272            | NADA      | NADA                           | 24        | 1|3|4|5|6|7|13|14             | 314     | 202     | 584   | 474   | 270   | 272    | 73440   | 449      | 338      |
 
-## get RGB values
-
-```sh
-awk -f /sdcard/rgbtools/awkrgb.awk -v c="1300,1#111,111#1000,140" -v w=1600
-
-# Provide the -v c parameter to specify the coordinates to extract RGB values from. Coordinates should be in the format x,y, separated by #. Multiple coordinates can be provided, separated by #.
-
-# Optionally, provide the -v w parameter to specify the screen width (saves some time). If not provided, the script will attempt to determine the screen width automatically.
-
-# For example, the following command extracts RGB values for the coordinates 1300,1; 111,111; and 1000,140 from a screen with a width of 1600 pixels:
-
-awk -f /sdcard/rgbtools/awkrgb.awk -v c="1300,1#111,111#1000,140" -v w=1600
-
-# Other examples
-
-# takes a little longer
-awk -f /sdcard/rgbtools/awkrgb.awk -v c="1300,1#111,111#1000,140"
-
-# another sep
-awk -f /sdcard/rgbtools/awkrgb.awk -v c="1300,1!111,111!1000,140" -v sep="!"
-
-```
-
-## get all RGB values of a region
-
-```sh
-# This command executes the AWK script, specifying the coordinates x0=1, y0=1 as the start coordinates, and x1=100, y1=100 as the end coordinates.
-awk -f /sdcard/rgbtools/awkrgbregion.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100
-
-# This example is similar to the first one but additionally specifies the screen width (-w 1600) - which saves some time. It captures a smaller region of the screen dump data defined by the coordinates (x0=1, y0=1, x1=10, y1=10) and extracts RGB values from it, considering a screen width of 1600 pixels.
-awk -f /sdcard/rgbtools/awkrgbregion.awk -v x0=1 -v y0=1 -v x1=10 -v y1=10 -w 1600
 
 ```
 
-## get RGB mean of a region
+# apply 
+
+## some pandas styled apply scripts
+
 ```sh
 
-awk -f /sdcard/rgbtools/awkrgbmean.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100
-# This command executes the awkrgbmean.awk script.
-# It sets the coordinates (x0, y0, x1, y1) for the region of interest as 1, 1, 100, 100 respectively.
-# The RGB values for this region are calculated using the awkrgbregion.awk script (assumed to be in the same directory as awkrgbmean.awk), and their mean is computed.
-# The mean RGB values are printed to the standard output.
+# Some scripts that create a new column, similar to pd.Series.apply
+# 0 (false) / 1 (true) is used for Boolean values 
 
-awk -f /sdcard/rgbtools/awkrgbmean.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v w=1600
-# This command is similar to Example 1, but it additionally sets the screen width w as 1600 (faster).
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="text" -v newcolumn="text2"  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="text" -v newcolumn="is_empty" -v is_empty=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="text" -v newcolumn="length" -v len=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_lt" -v lt=1 -v value=700  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_gt" -v gt=1 -v value=700  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_ge" -v ge=1 -v value=700  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_le" -v le=1 -v value=700  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_eq" -v eq=1 -v value=700  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="area" -v newcolumn="area_count" -v charcount=1 -v value="1"  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="area" -v newcolumn="area_count" -v charcount=1 -v value="0"  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="area" -v newcolumn="area_strcontains" -v strcontains=1 -v value="000"  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_sorted" -v sortletters=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_replaced" -v strreplace=1 -v old=andro -v new=BUDU  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="area" -v newcolumn="area_abs" -v absolute=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_leven" -v leven=1 -v str="android.view.View"  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_starts" -v strstartswith=1 -v value="android.view"  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_ends" -v strendswith=1 -v value="android.view"  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_rstrip" -v strrstrip=1 -v value="w"  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_lstrip" -v strlstrip=1 -v value="a"  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_spacestrip" -v spacestrip=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_upper" -v strupper=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_lower" -v strlower=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="text" -v newcolumn="text2"  | awk -f /sdcard/printer/awk_pretty_print.awk
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | text2                      |
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |                            |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |                            |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |                            |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |                            |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   |                            |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | Anocris                    |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="text" -v newcolumn="is_empty" -v is_empty=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | is_empty |
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1        |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 0        |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="text" -v newcolumn="length" -v len=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | length |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0      |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0      |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0      |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0      |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 0      |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 7      |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_lt" -v lt=1 -v value=700  | awk -f /sdcard/printer/awk_pretty_print.awk
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | centerx_lt |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1          |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1          |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1          |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1          |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1          |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 0          |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_gt" -v gt=1 -v value=700  | awk -f /sdcard/printer/awk_pretty_print.awk
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | centerx_gt |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 0          |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 1          |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_ge" -v ge=1 -v value=700  | awk -f /sdcard/printer/awk_pretty_print.awk
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | centerx_ge |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 0          |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 1          |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_le" -v le=1 -v value=700  | awk -f /sdcard/printer/awk_pretty_print.awk
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | centerx_le |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1          |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1          |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1          |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1          |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1          |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 0          |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_eq" -v eq=1 -v value=700  | awk -f /sdcard/printer/awk_pretty_print.awk
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | centerx_eq |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 0          |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 0          |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="area" -v newcolumn="area_count" -v charcount=1 -v value="1"  | awk -f /sdcard/printer/awk_pretty_print.awk
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | area_count |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1          |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1          |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1          |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1          |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1          |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 1          |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="area" -v newcolumn="area_count" -v charcount=1 -v value="0"  | awk -f /sdcard/printer/awk_pretty_print.awk
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | area_count |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 4          |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 4          |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 4          |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 4          |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 3          |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 1          |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="area" -v newcolumn="area_strcontains" -v strcontains=1 -v value="000"  | awk -f /sdcard/printer/awk_pretty_print.awk
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | area_strcontains |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 4                |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 4                |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 4                |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 4                |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 0                |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 0                |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_sorted" -v sortletters=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | class_sorted                              |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | ..FLaaadddeegiimnoorrttuwy                |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | ..LLaaadddeegiiinnoorrttuwy               |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | ..FLaaadddeegiimnoorrttuwy                |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | ..FLaaadddeegiimnoorrttuwy                |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | ...DLaaaaaddddeeegiilnooorrrrrtttuuwwwxyy |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | ..TVadddeeegiiinorttwwx                   |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_replaced" -v strreplace=1 -v old=andro -v new=BUDU  | awk -f /sdcard/printer/awk_pretty_print.awk
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | class_replaced                           |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | BUDUid.widget.FrameLayout                |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | BUDUid.widget.LinearLayout               |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | BUDUid.widget.FrameLayout                |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | BUDUid.widget.FrameLayout                |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | BUDUidx.drawerlayout.widget.DrawerLayout |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | BUDUid.widget.TextView                   |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="area" -v newcolumn="area_abs" -v absolute=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | area_abs |
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1440000  |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1440000  |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1440000  |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1440000  |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1407600  |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 18270    |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_leven" -v leven=1 -v str="android.view.View"  | awk -f /sdcard/printer/awk_pretty_print.awk
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | class_leven |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 14          |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 14          |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 14          |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 14          |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 28          |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 8           |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_starts" -v strstartswith=1 -v value="android.view"  | awk -f /sdcard/printer/awk_pretty_print.awk
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | class_starts |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0            |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0            |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0            |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0            |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 0            |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 0            |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_ends" -v strendswith=1 -v value="android.view"  | awk -f /sdcard/printer/awk_pretty_print.awk
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | class_ends |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0          |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 0          |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 0          |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_rstrip" -v strrstrip=1 -v value="w"  | awk -f /sdcard/printer/awk_pretty_print.awk
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | class_rstrip                              |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | android.widget.FrameLayout                |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | android.widget.LinearLayout               |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | android.widget.FrameLayout                |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | android.widget.FrameLayout                |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | androidx.drawerlayout.widget.DrawerLayout |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | android.widget.TextVie                    |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_lstrip" -v strlstrip=1 -v value="a"  | awk -f /sdcard/printer/awk_pretty_print.awk
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | class_lstrip                             |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | ndroid.widget.FrameLayout                |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | ndroid.widget.LinearLayout               |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | ndroid.widget.FrameLayout                |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | ndroid.widget.FrameLayout                |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | ndroidx.drawerlayout.widget.DrawerLayout |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | ndroid.widget.TextView                   |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_spacestrip" -v spacestrip=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | class_spacestrip                          |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | android.widget.FrameLayout                |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | android.widget.LinearLayout               |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | android.widget.FrameLayout                |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | android.widget.FrameLayout                |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | androidx.drawerlayout.widget.DrawerLayout |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | android.widget.TextView                   |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_upper" -v strupper=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | class_upper                               |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | ANDROID.WIDGET.FRAMELAYOUT                |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | ANDROID.WIDGET.LINEARLAYOUT               |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | ANDROID.WIDGET.FRAMELAYOUT                |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | ANDROID.WIDGET.FRAMELAYOUT                |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | ANDROIDX.DRAWERLAYOUT.WIDGET.DRAWERLAYOUT |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | ANDROID.WIDGET.TEXTVIEW                   |
+b0q:/ $ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_lower" -v strlower=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | class_lower                               |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | android.widget.framelayout                |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | android.widget.linearlayout               |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | android.widget.framelayout                |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | android.widget.framelayout                |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | androidx.drawerlayout.widget.drawerlayout |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | android.widget.textview                   |
 ```
 
-## click on the center coordinates of the first element
+# combining loc and apply 
 
 ```sh
-sh /sdcard/uidumpparser/u.sh > /sdcard/u.txt
-sh /sdcard/tap1stcoords/tap_first_center_coords.sh /sdcard/u.txt
-sh /sdcard/activityparser/awkparser.sh > /sdcard/a.txt
-sh /sdcard/tap1stcoords/tap_first_center_coords.sh /sdcard/a.txt
-```
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/loc/aloc.awk -v query="width>>300#height>>90#class~~view#enabled==false#area>=0#starty<=10000"  | awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_leven" -v leven=1 -v str="android.view.View" | awk -f /sdcard/loc/aloc.awk -v query="class_leven<<10" | awk -f /sdcard/printer/awk_pretty_print.awk
 
-## pretty print
-
-```sh
-sh /sdcard/activityparser/awkparser.sh > /sdcard/a.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk -v fs="\t" -v m=15 /sdcard/a.txt
-
-sh /sdcard/uidumpparser/u.sh > /sdcard/u.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/u.txt
-```
-
-## search for RGB color in area
-
-```sh
-# This command executes the awksearchrgb.awk script.
-# It sets the coordinates (x0, y0, x1, y1) for the region of interest as 1, 1, 100, 100, respectively.
-# It specifies the separator as #.
-# It provides the RGB color values to search for as 4,8,37 and 5,9,38.
-# The script will search for these RGB values in the specified region using awkrgbregion.awk and print any matching lines.
-awk -f /sdcard/rgbtools/awksearchrgb.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v sep="#" -v rgb="4,8,37#5,9,38"
-
-
-# This command is similar to Example 1, but it additionally sets the screen width w as 1600 (faster).
-# This extra parameter is passed to awkrgbregion.awk to assist in the calculation of RGB values.
-awk -f /sdcard/rgbtools/awksearchrgb.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v w=1600 -v rgb="4,8,37#5,9,38"
-
-# prints the first result and exits the script
-awk -f /sdcard/rgbtools/awksearchrgb.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v sep="#" -v rgb="4,8,37#5,9,38" -v breakfirst=1
+# /sdcard/elementparser/elementparser.sh | awk -f /sdcard/loc/aloc.awk -v query="width>>300#height>>90#class~~view#enabled==false#area>=0#starty<=10000"  -> same query as mentioned above 
+# awk -f /sdcard/series/seriesapply.awk -v column="class" -v newcolumn="class_leven" -v leven=1 -v str="android.view.View"  -> add a new column (class_leven) with the Levenshtein string distance (leven=1) to android.view.View from the column class 
+# awk -f /sdcard/loc/aloc.awk -v query="class_leven<<10" -> Only show the results where the string distance is less than 10
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                  | class                    | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | class_leven |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+7             | 0     |                            |                                              | android.view.View        | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 0           |
+8             | 1     |                            |                                              | android.view.ViewGroup   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 5           |
+10            | 0     |                            | com.bluestacks.launcher:id/searchPlayIcon    | android.widget.ImageView | com.bluestacks.launcher | searchbar    | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 170    | 189  | 131    | 150  | 179     | 140     | 361     | 19    | 19     | 9           |
+12            | 2     |                            | com.bluestacks.launcher:id/searchIcon        | android.widget.ImageView | com.bluestacks.launcher | searchbar    | false     | false   | true      | true    | true      | false   | false      | false          | false    | false    | 712    | 731  | 131    | 150  | 721     | 140     | 361     | 19    | 19     | 9           |
+14            | 0     |                            |                                              | android.view.ViewGroup   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 44     | 856  | 202    | 1290 | 450     | 746     | 883456  | 812   | 1088   | 5           |
+...
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three    | android.widget.TextView  | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     | 8           |
 
 ```
 
-## add a new column (like pd.Series.apply)
+```sh
+# # finds all elements where text is not an empty string and where centerx is less or equal 700
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="text" -v newcolumn="is_empty" -v is_empty=1 | awk -f /sdcard/loc/aloc.awk -v query="is_empty==1" | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_le" -v le=1 -v value=700 | awk -f /sdcard/loc/aloc.awk -v query="centerx_le==1" | awk -f /sdcard/printer/awk_pretty_print.awk
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | is_empty | centerx_le |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          |
+2             | 0     |      |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          |
+3             | 0     |      | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          |
+4             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          |
+5             | 0     |      | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1        | 1          |
+...
+31            | 0     |      | com.bluestacks.launcher:id/app_image_two        | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 406    | 497  | 1414   | 1505 | 451     | 1459    | 8281    | 91    | 91     | 1        | 1          |
+```
 
 ```sh
-sh /sdcard/uidumpparser/u.sh
+# finds all elements where text is not an empty string and where centerx is less or equal 700 and centery is greater than 100
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="text" -v newcolumn="is_empty" -v is_empty=1 | awk -f /sdcard/loc/aloc.awk -v query="is_empty==1" -v and=1 | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_le" -v le=1 -v value=700 | awk -f /sdcard/loc/aloc.awk -v query="centerx_le==1" -v and=1 | awk -f /sdcard/series/seriesapply.awk -v column="centery" -v newcolumn="centery_gt" -v gt=1 -v value=100 |  awk -f /sdcard/loc/aloc.awk -v query="centery_gt==1" -v and=1  | awk -f /sdcard/printer/awk_pretty_print.awk
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | is_empty | centerx_le | centery_gt |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 1          |
+2             | 0     |      |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 1          |
+3             | 0     |      | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 1          |
+4             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 1          |
+5             | 0     |      | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1        | 1          | 1          |
+...
+31            | 0     |      | com.bluestacks.launcher:id/app_image_two        | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 406    | 497  | 1414   | 1505 | 451     | 1459    | 8281    | 91    | 91     | 1        | 1          | 1          |
+b0q:/ $
+```
 
-# This example creates a new column "text2" with the length of each entry in the column "text".
+# own apply functions
 
-awk -f /sdcard/apply/awkapply.awk -v column="text" -v newcolumn="text2" -v apply="{printf length(\$0)}" /sdcard/u.txt > /sdcard/p.txt
+## apply any function/script you want against any column
+```sh
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/awkapply/apply.awk -v column="text" -v newcolumn="text2" -v apply="{printf length(\$0)}" | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/awkapply/apply.awk -v column="endy" -v newcolumn="endy2" -v apply="{printf (\$0 \> 700)}"  | awk -f /sdcard/printer/awk_pretty_print.awk
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/awkapply/apply.awk -v column="clickable" -v newcolumn="is_clickable" -v apply="{printf (\$0 \~ \"true\")}"  | awk -f /sdcard/printer/awk_pretty_print.awk
 
-# In this example, the "endy2" column is created. If the value in "endy" is greater than 700, the value in "endy" will be "1" else "0".
+# getting the text length
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/awkapply/apply.awk -v column="text" -v newcolumn="text2" -v apply="{printf length(\$0)}" | awk -f /sdcard/printer/awk_pretty_print.awk
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | text2 |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |       |
+20            | 5     |                            |                                                 | android.view.View                         | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | true           | false    | false    | 584    | 854  | 474    | 746  | 719     | 610     | 73440   | 270   | 272    |       |
+21            | 2     |                            | com.bluestacks.launcher:id/dock                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 1367   | 1600 | 450     | 1483    | 209700  | 900   | 233    |       |
+22            | 0     | JOGOS POPULARES PARA JOGAR | com.bluestacks.launcher:id/popular_gam          | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 1376   | 1401 | 450     | 1388    | 22500   | 900   | 25     | 26    |
+28            | 0     |                            | com.bluestacks.launcher:id/popup_image_one      | android.widget.ImageView                  | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 153    | 176  | 1417   | 1440 | 164     | 1428    | 529     | 23    | 23     |       |
+...
+35            | 0     |                            | com.bluestacks.launcher:id/popup_image_three    | android.widget.ImageView                  | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 788    | 811  | 1417   | 1440 | 799     | 1428    | 529     | 23    | 23     |       |
 
-awk -f /sdcard/apply/awkapply.awk -v column="endy" -v newcolumn="endy2" -v apply="{printf (\$0 \> 700)}" /sdcard/u.txt > /sdcard/p.txt
 
-# Here, the is_clickable is set to true or false based on whether the original value contains the string "true" or not.
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/awkapply/apply.awk -v column="endy" -v newcolumn="endy2" -v apply="{printf (\$0 \> 700)}"  | awk -f /sdcard/printer/awk_pretty_print.awk
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | endy2 |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1     |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1     |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1     |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1     |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1     |
+...
+10            | 0     |                            | com.bluestacks.launcher:id/searchPlayIcon       | android.widget.ImageView                  | com.bluestacks.launcher | searchbar    | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 170    | 189  | 131    | 150  | 179     | 140     | 361     | 19    | 19     | 0     |
 
-awk -f /sdcard/apply/awkapply.awk -v column="clickable" -v newcolumn="is_clickable" -v apply="{printf (\$0 \~ \"true\")}" /sdcard/u.txt > /sdcard/p.txt
 
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/awkapply/apply.awk -v column="clickable" -v newcolumn="is_clickable" -v apply="{printf (\$0 \~ \"true\")}"  | awk -f /sdcard/printer/awk_pretty_print.awk
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | is_clickable |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0            |
+2             | 0     |                            |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0            |
+3             | 0     |                            | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0            |
+4             | 0     |                            |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 0            |
+5             | 0     |                            | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 0            |
+...
+11            | 1     |                            | com.bluestacks.launcher:id/searchEditText       | android.widget.EditText                   | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | true    | false      | true           | false    | false    | 188    | 712  | 117    | 166  | 450     | 141     | 25676   | 524   | 49     | 1            |
+```
+
+# locating colors 
+
+
+## filter the data first
+```sh
+# find the elements that you want to analyze, and save the result to a file:
+ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="text" -v newcolumn="is_empty" -v is_empty=1 | awk -f /sdcard/loc/aloc.awk -v query="is_empty==1" | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_le" -v le=1 -v value=700 | awk -f /sdcard/loc/aloc.awk -v query="centerx_le==1" > /sdcard/fifi.txt
+## get dominant color
+```
+
+## one color
+
+### get dominant color
+```sh
+
+# get the dominant color in each element
+screencap | hexdump -v -e '4/1 "%d," "\n"' | awk -f /sdcard/loc/rloc.awk -v col1=startx -v col2=starty -v col3=endx -v col4=endy -v newcolumn=dom_color -v dominant_color=1 -v fi=/sdcard/fifi.txt  | awk -f /sdcard/printer/awk_pretty_print.awk
+# elements whose size is as big as the whole screen are ignored. To include them, use -v scan_full_size=1
+screencap | hexdump -v -e '4/1 "%d," "\n"' | awk -f /sdcard/loc/rloc.awk -v scan_full_size=1 -v col1=startx -v col2=starty -v col3=endx -v col4=endy -v newcolumn=dom_color -v dominant_color=1 -v fi=/sdcard/fifi.txt  | awk -f /sdcard/printer/awk_pretty_print.awk
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | is_empty | centerx_le | dom_color_r | dom_color_g | dom_color_b |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1          | -1          | -1          |
+2             | 0     |      |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1          | -1          | -1          |
+3             | 0     |      | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1          | -1          | -1          |
+4             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1          | -1          | -1          |
+5             | 0     |      | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1        | 1          | 2           | 6           | 35          |
+...
+31            | 0     |      | com.bluestacks.launcher:id/app_image_two        | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 406    | 497  | 1414   | 1505 | 451     | 1459    | 8281    | 91    | 91     | 1        | 1          | 7           | 4           | 12          |
+
+
+screencap | hexdump -v -e '4/1 "%d," "\n"' | awk -f /sdcard/loc/rloc.awk -v scan_full_size=1 -v col1=startx -v col2=starty -v col3=endx -v col4=endy -v newcolumn=dom_color -v dominant_color=1 -v fi=/sdcard/fifi.txt  | awk -f /sdcard/printer/awk_pretty_print.awk
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | is_empty | centerx_le | dom_color_r | dom_color_g | dom_color_b |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 2           | 6           | 35          |
+2             | 0     |      |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 2           | 6           | 35          |
+3             | 0     |      | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 2           | 6           | 35          |
+4             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 2           | 6           | 35          |
+5             | 0     |      | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1        | 1          | 2           | 6           | 35          |
+...
+31            | 0     |      | com.bluestacks.launcher:id/app_image_two        | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 406    | 497  | 1414   | 1505 | 451     | 1459    | 8281    | 91    | 91     | 1        | 1          | 7           | 4           | 12          |
 
 ```
 
-## sortby columns
+### count one color 
 
 ```sh
-sh /sdcard/uidumpparser/u.sh
 
-# This example sorts the data in u.txt first by the centery column and then by the area column.
-# Numeric sorting is enabled.
+# elements whose size is as big as the whole screen are ignored. To include them, use -v scan_full_size=1
+
+screencap | hexdump -v -e '4/1 "%d," "\n"' | awk -f /sdcard/loc/rloc.awk -v col1=startx -v col2=starty -v col3=endx -v col4=endy -v newcolumn=color_count -v rgb=255,255,255 -v count_one_color=1 -v fi=/sdcard/fifi.txt  | awk -f /sdcard/printer/awk_pretty_print.awk
+
+# for multiple colors:
+screencap | hexdump -v -e '4/1 "%d," "\n"' | awk -f /sdcard/loc/rloc.awk -v col1=startx -v col2=starty -v col3=endx -v col4=endy -v newcolumn=color_count -v rgbvalues=24,24,24#25,25,25 -v count_one_color=1 -v fi=/sdcard/fifi.txt  | awk -f /sdcard/printer/awk_pretty_print.awk
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | is_empty | centerx_le | color_count |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0           |
+2             | 0     |      |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0           |
+3             | 0     |      | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0           |
+4             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0           |
+5             | 0     |      | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1        | 1          | 39770       |
+...
+31            | 0     |      | com.bluestacks.launcher:id/app_image_two        | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 406    | 497  | 1414   | 1505 | 451     | 1459    | 8281    | 91    | 91     | 1        | 1          | 0           |
+
+```
+
+### check if a color is present
+
+```sh
+
+# elements whose size is as big as the whole screen are ignored. To include them, use -v scan_full_size=1
+screencap | hexdump -v -e '4/1 "%d," "\n"' | awk -f /sdcard/loc/rloc.awk -v col1=startx -v col2=starty -v col3=endx -v col4=endy -v newcolumn=is_there -v rgb=255,255,255 -v is_one_color_there=1 -v fi=/sdcard/fifi.txt  | awk -f /sdcard/printer/awk_pretty_print.awk
+
+# for multiple colors 
+screencap | hexdump -v -e '4/1 "%d," "\n"' | awk -f /sdcard/loc/rloc.awk -v col1=startx -v col2=starty -v col3=endx -v col4=endy -v newcolumn=is_there -v rgbvalues=24,24,24#25,25,25 -v is_one_color_there=1 -v fi=/sdcard/fifi.txt  | awk -f /sdcard/printer/awk_pretty_print.awk
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | is_empty | centerx_le | is_there |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0        |
+2             | 0     |      |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0        |
+3             | 0     |      | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0        |
+4             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0        |
+5             | 0     |      | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1        | 1          | 1        |
+...
+31            | 0     |      | com.bluestacks.launcher:id/app_image_two        | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 406    | 497  | 1414   | 1505 | 451     | 1459    | 8281    | 91    | 91     | 1        | 1          | 0        |
+```
+
+### get average coordinates of a color
+
+```sh
+# elements whose size is as big as the whole screen are ignored. To include them, use -v scan_full_size=1
+screencap | hexdump -v -e '4/1 "%d," "\n"' | awk -f /sdcard/loc/rloc.awk -v col1=startx -v col2=starty -v col3=endx -v col4=endy -v newcolumn=avg -v rgb=255,255,255 -v get_avarage_coord=1 -v fi=/sdcard/fifi.txt  | awk -f /sdcard/printer/awk_pretty_print.awk
+# for multiple colors:
+screencap | hexdump -v -e '4/1 "%d," "\n"' | awk -f /sdcard/loc/rloc.awk -v col1=startx -v col2=starty -v col3=endx -v col4=endy -v newcolumn=avg -v rgbvalues=24,24,24#25,25,25 -v get_avarage_coord=1 -v fi=/sdcard/fifi.txt  | awk -f /sdcard/printer/awk_pretty_print.awk
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | is_empty | centerx_le | avg_x | avg_y |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1    | -1    |
+2             | 0     |      |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1    | -1    |
+3             | 0     |      | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1    | -1    |
+4             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1    | -1    |
+5             | 0     |      | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1        | 1          | 417   | 207   |
+...
+31            | 0     |      | com.bluestacks.launcher:id/app_image_two        | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 406    | 497  | 1414   | 1505 | 451     | 1459    | 8281    | 91    | 91     | 1        | 1          | -1    | -1    |
+```
+
+ ### get average color in a region
+
+```sh
+# elements whose size is as big as the whole screen are ignored. To include them, use -v scan_full_size=1
+
+screencap | hexdump -v -e '4/1 "%d," "\n"' | awk -f /sdcard/loc/rloc.awk -v col1=startx -v col2=starty -v col3=endx -v col4=endy -v newcolumn=avg_color -v average_color=1 -v fi=/sdcard/fifi.txt  | awk -f /sdcard/printer/awk_pretty_print.awk
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | is_empty | centerx_le | avg_color_r | avg_color_g | avg_color_b |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1          | -1          | -1          |
+2             | 0     |      |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1          | -1          | -1          |
+3             | 0     |      | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1          | -1          | -1          |
+4             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1          | -1          | -1          |
+5             | 0     |      | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1        | 1          | 16          | 20          | 46          |
+...
+31            | 0     |      | com.bluestacks.launcher:id/app_image_two        | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 406    | 497  | 1414   | 1505 | 451     | 1459    | 8281    | 91    | 91     | 1        | 1          | 136         | 80          | 73          |
+```
+
+## color range
+
+### count color range
+
+```sh
+# elements whose size is as big as the whole screen are ignored. To include them, use -v scan_full_size=1
+rgbrange is red_min, red_max, green_min, green_max, blue_min, blue_max 
+
+screencap | hexdump -v -e '4/1 "%d," "\n"' | awk -f /sdcard/loc/rloc.awk -v col1=startx -v col2=starty -v col3=endx -v col4=endy -v newcolumn=color_count -v rgbrange=250,255,250,255,240,255 -v count_one_color=1 -v fi=/sdcard/fifi.txt  | awk -f /sdcard/printer/awk_pretty_print.awk
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | is_empty | centerx_le | color_count |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0           |
+2             | 0     |      |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0           |
+3             | 0     |      | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0           |
+4             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0           |
+5             | 0     |      | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1        | 1          | 40335       |
+...
+31            | 0     |      | com.bluestacks.launcher:id/app_image_two        | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 406    | 497  | 1414   | 1505 | 451     | 1459    | 8281    | 91    | 91     | 1        | 1          | 0           |
+```
+
+
+### check if a color range is present
+
+```sh
+# elements whose size is as big as the whole screen are ignored. To include them, use -v scan_full_size=1
+
+rgbrange is red_min, red_max, green_min, green_max, blue_min, blue_max 
+screencap | hexdump -v -e '4/1 "%d," "\n"' | awk -f /sdcard/loc/rloc.awk -v col1=startx -v col2=starty -v col3=endx -v col4=endy -v newcolumn=is_there -v rgbrange=250,255,250,255,240,255 -v is_one_color_there=1 -v fi=/sdcard/fifi.txt  | awk -f /sdcard/printer/awk_pretty_print.awk
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | is_empty | centerx_le | is_there |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0        |
+2             | 0     |      |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0        |
+3             | 0     |      | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0        |
+4             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | 0        |
+5             | 0     |      | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1        | 1          | 1        |
+...
+31            | 0     |      | com.bluestacks.launcher:id/app_image_two        | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 406    | 497  | 1414   | 1505 | 451     | 1459    | 8281    | 91    | 91     | 1        | 1          | 0        |
+```
+
+
+### average coordinates of a color range
+
+```sh
+# elements whose size is as big as the whole screen are ignored. To include them, use -v scan_full_size=1
+
+rgbrange is red_min, red_max, green_min, green_max, blue_min, blue_max 
+
+screencap | hexdump -v -e '4/1 "%d," "\n"' | awk -f /sdcard/loc/rloc.awk -v col1=startx -v col2=starty -v col3=endx -v col4=endy -v newcolumn=avg -v rgbrange=250,255,250,255,240,255 -v get_avarage_coord=1 -v fi=/sdcard/fifi.txt  | awk -f /sdcard/printer/awk_pretty_print.awk
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | is_empty | centerx_le | avg_x | avg_y |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1    | -1    |
+2             | 0     |      |                                                 | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1    | -1    |
+3             | 0     |      | android:id/content                              | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1    | -1    |
+4             | 0     |      |                                                 | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   | 1        | 1          | -1    | -1    |
+5             | 0     |      | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1        | 1          | 417   | 210   |
+...
+31            | 0     |      | com.bluestacks.launcher:id/app_image_two        | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 406    | 497  | 1414   | 1505 | 451     | 1459    | 8281    | 91    | 91     | 1        | 1          | -1    | -1    |
+b0q:/ $
+```
+
+# Colors without elements
+
+```sh
+# dump rgb data:
+sh /sdcard/rgb/fastrgbdump.sh -x0 151 -y0 750 -x1 217 -y1 766
+...
+183,762,2,6,35 # x, y, r, g, b
+184,762,2,6,35
+...
+# dump rgb data from region with already captured screen
+screencap >/sdcard/rgb/capscreen.tmp
+sh /sdcard/rgb/fastrgbdump.sh -f /sdcard/rgb/capscreen.tmp -x0 151 -y0 750 -x1 217 -y1 766
+...
+183,762,2,6,35 # x, y, r, g, b
+184,762,2,6,35
+...
+# hexdump to a file
+sh /sdcard/rgb/fastrgbdump.sh --onlyhexdump 1 >/sdcard/rgb/hexdump.tmp
+sh /sdcard/rgb/fastrgbdump.sh -x /sdcard/rgb/hexdump.tmp -x0 151 -y0 750 -x1 217 -y1 766
+...
+183,762,2,6,35 # x, y, r, g, b
+184,762,2,6,35
+...
+# count colors in a region
+sh /sdcard/rgb/fastrgbdump.sh --colorcount 1 -x0 151 -y0 750 -x1 217 -y1 766
+1056:2,6,35 # qty, r,g, b
+# color at coordinate
+sh /sdcard/rgb/fastrgbdump.sh -x0 151 -y0 750
+151,750,2,6,35 # x, y, r, g, b
+
+# search for colors in a region
+sh /sdcard/rgb/fastrgbdump.sh --rgbcolors 255,255,255#2,6,35 -x0 151 -y0 750 -x1 317 -y1 766
+2656:2,6,35
+# check if any of the colors are in a region (returns 0 for true, 1 for false)
+sh /sdcard/rgb/fastrgbdump.sh --inregion 1 --rgbcolors 2,6,35#255,255,255 -x0 151 -y0 750 -x1 317 -y1 766
+
+```
+
+# sorting
+
+```sh
+
 file="/sdcard/u.txt"
-sortby="centery;area"
+sortby="centery;area" # first centery 
 numeric=1
-sh /sdcard/sortbycol/sortbycol.sh "$sortby" "$file" "$numeric" >/sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+sh /sdcard/elementparser/elementparser.sh | sh /sdcard/sortby/sortbycol.sh "$sortby" "$file" "$numeric" | awk -f /sdcard/printer/awk_pretty_print.awk
 
-# Here, the data is sorted by the area column first and then by the centery column.
-# Numeric sorting is enabled
-file="/sdcard/u.txt"
-sortby="area;centery"
-numeric=1
-sh /sdcard/sortbycol/sortbycol.sh "$sortby" "$file" "$numeric" >/sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-
-# This example sorts the data by the text column only.
-# Non-numeric sorting is performed, and the output is written to p.txt.
-file="/sdcard/u.txt"
-sortby="text"
-numeric=0
-sh /sdcard/sortbycol/sortbycol.sh "$sortby" "$file" "$numeric" >/sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text | resource-id                                        | class                                     | package    | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+25            | 1     |      | android:id/statusBarBackground                     | android.view.View                         | com.termux |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 36   | 450     | 18      | 32400   | 900   | 36     |
+6             | 0     |      | com.termux:id/drawer_layout                        | androidx.drawerlayout.widget.DrawerLayout | com.termux |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 4      | 896  | 36     | 1486 | 450     | 761     | 1293400 | 892   | 1450   |
+7             | 0     |      | com.termux:id/terminal_view                        | android.view.View                         | com.termux |              | false     | false   | false     | true    | true      | true    | false      | true           | false    | false    | 4      | 896  | 36     | 1486 | 450     | 761     | 1293400 | 892   | 1450   |
+1             | 0     |      |                                                    | android.widget.FrameLayout                | com.termux |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
+2             | 0     |      |                                                    | android.widget.FrameLayout                | com.termux |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
+...
+22            | 12    | ΓåÆ  |                                                    | android.widget.Button                     | com.termux |              | false     | false   | true      | true    | true      | false   | false      | false          | false    | false    | 641    | 769  | 1542   | 1598 | 705     | 1570    | 7168    | 128   | 56     |
 ```
 
-## non greedy regex 
+
+# drop duplicates by columns
+
+```sh
+sh /sdcard/elementparser/elementparser.sh | awk -f "/sdcard/dropdu/dropdu.awk" -v columns="class" | awk -f /sdcard/printer/awk_pretty_print.awk
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text    | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height |
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+9             | 0     |         | com.bluestacks.launcher:id/searchRelativeLayout | android.widget.RelativeLayout             | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | false          | false    | false    | 151    | 750  | 117    | 166  | 450     | 141     | 29351   | 599   | 49     |
+5             | 0     |         | com.bluestacks.launcher:id/drawer_layout        | androidx.drawerlayout.widget.DrawerLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   |
+34            | 0     |         | com.bluestacks.launcher:id/app_image_three      | android.widget.FrameLayout                | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 723    | 814  | 1414   | 1505 | 768     | 1459    | 8281    | 91    | 91     |
+14            | 0     |         |                                                 | android.view.ViewGroup                    | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 44     | 856  | 202    | 1290 | 450     | 746     | 883456  | 812   | 1088   |
+33            | 2     |         | com.bluestacks.launcher:id/appThreeLinearLayout | android.widget.LinearLayout               | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | false          | false    | false    | 610    | 900  | 1401   | 1576 | 755     | 1488    | 50750   | 290   | 175    |
+...
+35            | 0     |         | com.bluestacks.launcher:id/popup_image_three    | android.widget.ImageView                  | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 788    | 811  | 1417   | 1440 | 799     | 1428    | 529     | 23    | 23     |
+sh /sdcard/elementparser/elementparser.sh | awk -f "/sdcard/dropdu/dropdu.awk" -v columns="centerx,centery"  | awk -f /sdcard/printer/awk_pretty_print.awk
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                       | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+30            | 1     |                            | com.bluestacks.launcher:id/appTwoLinearLayout   | android.widget.LinearLayout | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | false          | false    | false    | 293    | 610  | 1401   | 1576 | 451     | 1488    | 55475   | 317   | 175    |
+35            | 0     |                            | com.bluestacks.launcher:id/popup_image_three    | android.widget.ImageView    | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 788    | 811  | 1417   | 1440 | 799     | 1428    | 529     | 23    | 23     |
+20            | 5     |                            |                                                 | android.view.View           | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | true           | false    | false    | 584    | 854  | 474    | 746  | 719     | 610     | 73440   | 270   | 272    |
+25            | 0     |                            | com.bluestacks.launcher:id/allappsLinearLayout  | android.widget.LinearLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 1401   | 1576 | 450     | 1488    | 157500  | 900   | 175    |
+32            | 1     | Primon Legion              | com.bluestacks.launcher:id/app_name_two         | android.widget.TextView     | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 293    | 610  | 1513   | 1576 | 451     | 1544    | 19971   | 317   | 63     |
+...
+21            | 2     |                            | com.bluestacks.launcher:id/dock                 | android.widget.LinearLayout | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 1367   | 1600 | 450     | 1483    | 209700  | 900   | 233    |
+sh /sdcard/elementparser/elementparser.sh | awk -f "/sdcard/dropdu/dropdu.awk" -v columns="area,width" | awk -f /sdcard/printer/awk_pretty_print.awk
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                         | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+21            | 2     |                            | com.bluestacks.launcher:id/dock                 | android.widget.LinearLayout   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 1367   | 1600 | 450     | 1483    | 209700  | 900   | 233    |
+14            | 0     |                            |                                                 | android.view.ViewGroup        | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 44     | 856  | 202    | 1290 | 450     | 746     | 883456  | 812   | 1088   |
+37            | 1     |                            | com.bluestacks.launcher:id/viewBackground       | android.view.View             | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 1484   | 1600 | 450     | 1542    | 104400  | 900   | 116    |
+36            | 1     | Anocris                    | com.bluestacks.launcher:id/app_name_three       | android.widget.TextView       | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 610    | 900  | 1513   | 1576 | 755     | 1544    | 18270   | 290   | 63     |
+4             | 0     |                            |                                                 | android.widget.FrameLayout    | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 0      | 1600 | 450     | 800     | 1440000 | 900   | 1600   |
+...
+12            | 2     |                            | com.bluestacks.launcher:id/searchIcon           | android.widget.ImageView      | com.bluestacks.launcher | searchbar    | false     | false   | true      | true    | true      | false   | false      | false          | false    | false    | 712    | 731  | 131    | 150  | 721     | 140     | 361     | 19    | 19     |
+```
+
+
+# Interacting with elements 
+
+## click / tap  
+```sh
+# click and random click
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_lt" -v lt=1 -v value=700 > /sdcard/resultsquery.txt
+# click on the first element in the results 
+sh /sdcard/interactions/tap_first_center_coords.sh --filename /sdcard/resultsquery.txt
+# click on a random element in the results 
+sh /sdcard/interactions/tap_first_center_coords.sh --filename /sdcard/resultsquery.txt --random 1
+
+```
+
+## typing 
+
+```sh
+# accents are replaced, newlines can be used 
+sh /sdcard/interactions/inputtext.sh --text "Hello my friend\nbibi\nddx"
+sh /sdcard/interactions/inputtext.sh --text "Hello my friend\nbibi\nddx" --min 100 --max 200 # default delay between 100 and 200 ms
+sh /sdcard/interactions/inputtext.sh --text "Hello my friend\nbibi\nddx" --min 100 --max 200 --lettermin 1 --lettermax 3 # write between 1 and 3 letters at once 
+```
+
+## typing2
+
+```sh
+sh /sdcard/inevents/inputtextnatural.sh "Hoje vou sair!"
+```
+
+# shuffle stuff 
+
+## shuffle results 
+
+```sh
+sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.awk -v column="centerx" -v newcolumn="centerx_lt" -v lt=1 -v value=700 > /sdcard/resultsquery.txt
+
+sh /sdcard/useful/shufflestuff.sh --file /sdcard/resultsquery.txt --skipfirst 1 | awk -f /sdcard/printer/awk_pretty_print.awk # skips the header
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+element_index | index | text                       | resource-id                                     | class                                     | package                 | content-desc | checkable | checked | clickable | enabled | focusable | focused | scrollable | long-clickable | password | selected | startx | endx | starty | endy | centerx | centery | area    | width | height | centerx_lt |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+12            | 2     |                            | com.bluestacks.launcher:id/searchIcon           | android.widget.ImageView                  | com.bluestacks.launcher | searchbar    | false     | false   | true      | true    | true      | false   | false      | false          | false    | false    | 712    | 731  | 131    | 150  | 721     | 140     | 361     | 19    | 19     | 0          |
+32            | 1     | Primon Legion              | com.bluestacks.launcher:id/app_name_two         | android.widget.TextView                   | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 293    | 610  | 1513   | 1576 | 451     | 1544    | 19971   | 317   | 63     | 1          |
+7             | 0     |                            |                                                 | android.view.View                         | com.bluestacks.launcher |              | false     | false   | false     | true    | false     | false   | false      | false          | false    | false    | 0      | 900  | 36     | 1600 | 450     | 818     | 1407600 | 900   | 1564   | 1          |
+16            | 1     |                            |                                                 | android.view.View                         | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | true           | false    | false    | 314    | 584  | 202    | 474  | 449     | 338     | 73440   | 270   | 272    | 1          |
+17            | 2     |                            |                                                 | android.view.View                         | com.bluestacks.launcher |              | false     | false   | true      | true    | true      | false   | false      | true           | false    | false    | 584    | 854  | 202    | 474  | 719     | 338     | 73440   | 270   | 272    | 0          |
+
+
+sh /sdcard/useful/shufflestuff.sh --file /sdcard/resultsquery.txt --skipfirst 0 | awk -f /sdcard/printer/awk_pretty_print.awk
+```
+
+## get true / false of a certain percentage 
+
+```sh
+# returns 30% 0 and 70% 1
+sh /sdcard/useful/shufflestuff.sh --percentage 30 
+```
+
+
+## non greedy regex  (kind of)
 ```sh
 string="oioioibabapooiba"
 regularexpression="oi.*ba"
@@ -305,42 +943,27 @@ sh /sdcard/regex/regexnongreedy.sh "$regularexpression" "$findshortest" "$string
 # oiba
 ```
 
-## Counting Colors in a Region:
-
-```sh
-# This command counts the occurrences of each color in the region defined by (1,1) to (100,100) on the screen
-awk -f /sdcard/rgbtools/awkcountcolors.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100
-
-# Here, the screen width (w) is specified as 1600 pixels. (a little faster)
-awk -f /sdcard/rgbtools/awkcountcolors.awk -v x0=1 -v y0=1 -v x1=100 -v y1=100 -v w=1600
-
-```
-
 ## sendevent tap 
 
 ```sh
 # fromn the second time on, it is faster when you use the same config
-awk -f /sdcard/inevents/sendeventtap.awk -v x=212 -v y=126 -v devi=event4 -v m=32767 -v w=1600 -v h=900
+awk -f /sdcard/interactions/sendeventtap.awk -v x=212 -v y=126 -v devi=event4 -v m=32767 -v w=1600 -v h=900
 
 # if you don't know m (takes a little longer)
-awk -f /sdcard/inevents/sendeventtap.awk -v x=212 -v y=126 -v devi=event4 -v w=1600 -v h=900
+awk -f /sdcard/interactions/sendeventtap.awk -v x=212 -v y=126 -v devi=event4 -v w=1600 -v h=900
 
 # if you don't know m, w, h (takes a little longer)
-awk -f /sdcard/inevents/sendeventtap.awk -v x=214 -v y=126 -v devi=event4
+awk -f /sdcard/interactions/sendeventtap.awk -v x=214 -v y=126 -v devi=event4
 ```
 
 ## sendevent keyboard
 
 ```sh
-awk -f /sdcard/sendeventkeys.awk -v event="EV_KEY" -v keycode="KEY_Q" -v devi="/dev/input/event3" -v duration=1
-awk -f /sdcard/sendeventkeys.awk -v event="EV_KEY" -v keycode="KEY_A" -v devi="/dev/input/event3" -v duration=1
+awk -f /sdcard/interactions/sendeventkeys.awk -v event="EV_KEY" -v keycode="KEY_Q" -v devi="/dev/input/event3" -v duration=1
+awk -f /sdcard/interactions/sendeventkeys.awk -v event="EV_KEY" -v keycode="KEY_A" -v devi="/dev/input/event3" -v duration=1
 ```
 
-## input text natural 
 
-```sh
-sh /sdcard/inevents/inputtextnatural.sh "Hoje vou sair!"
-```
 
 ## random swipe
 ```sh
@@ -349,11 +972,28 @@ sh /sdcard/inevents/swipe_randomly.sh 70 80 45 47 30 40 45 47 1000 3000 5 10
 # the values that have to be passed: "$start_height1" "$start_height2" "$start_width1" "$start_width2" "$end_height1" "$end_height2" "$end_width1" "$end_width2" "$swipemintime" "$swipemaxtime" "$min_repeat" "$max_repeat"
 ```
 
+## random swipe with check
+```sh
+# checks if still can be scrolled, changes direction if it is not possible anymore
+i=0
+while [ "$i" -lt 10 ]; do
+    sh /sdcard/showscrolls/swipewithcheck.sh 70 80 45 47 30 40 45 47 1000 3000 5 10 8
+    sh /sdcard/showscrolls/swipewithcheck.sh 30 40 45 47 70 80 45 47 1000 3000 5 10 8
+    i=$((i + 1))
+    sleep 1
+done
+```
+
+## grant / revoke permissions
+```sh
+sh /sdcard/useful/grantrevoke.sh --package com.termux --grant 0
+sh /sdcard/useful/grantrevoke.sh --package com.termux --grant 1
+```
+
 ## firefox autoinstall + permissions
 ```sh
 sh /sdcard/ffox/installfirefox.sh
 ```
-
 
 ## firefox downloader
 ```sh
@@ -361,84 +1001,66 @@ sh /sdcard/ffox/installfirefox.sh
 sh /sdcard/firefoxdownload.sh https://github.com/hansalemaos/Magisk_collection/raw/main/TotalCommander_3.42beta5-1183_minAPI8_arm64-v8a.apk 60
 ```
 
-## shuffle / sample 
-```sh
-sh /sdcard/shuffleelements/shuffleelements.sh /sdcard/u.txt >/sdcard/o.txt
-awk -f /sdcard/awk_pretty_print.awk /sdcard/o.txt
-```
-
-## drop duplicates by one or more columns
-```sh
-
-sh /sdcard/dropduplicates/drop_duplicates_by_column.sh "text,package" /sdcard/u.txt >/sdcard/o.txt
-
-sh /sdcard/dropduplicates/drop_duplicates_by_column.sh "text,package,centerx" /sdcard/u.txt >/sdcard/o.txt
-
-sh /sdcard/dropduplicates/drop_duplicates_by_column.sh "text" /sdcard/u.txt >/sdcard/o.txt
-
-
-```
-
 ## array contains
 
 ```sh
 array_of_numbers=( "1" "2" "3" )
 needle1="3"
-sh /sdcard/usefulscripts/array_contains.sh "1" "${array_of_numbers[@]}"
+sh /sdcard/useful/array_contains.sh "1" "${array_of_numbers[@]}"
 ```
 
 ## join array
 
 ```sh
 array_of_numbers=( "1" "2" "3" )
-sh /sdcard/usefulscripts/array_to_string.sh ", " "${array_of_numbers[@]}"
+sh /sdcard/useful/array_to_string.sh ", " "${array_of_numbers[@]}"
 ```
 
 ## get random number between
 
 ```sh
-sh /sdcard/usefulscripts/get_random_number_between.sh 100 200
+sh /sdcard/useful/get_random_number_between.sh 100 200
 ```
 
 ## Generate regex for numbers
 
 ```sh
-sh /sdcard/usefulscripts/get_range.sh 100 2000
+sh /sdcard/useful/get_range.sh 100 2000
 ```
 
 ## join str with one char
 ```sh
-sh /sdcard/usefulscripts/joinsinglechar.sh /sdcard/u.txt "X"
+sh /sdcard/useful/joinsinglechar.sh /sdcard/u.txt "X"
 ```
 
 ## remove charset from string
 ```sh
-sh /sdcard/usefulscripts/remove_charset_from_string.sh "The Quick Brown Fox" "[aeiou]"
+sh /sdcard/useful/remove_charset_from_string.sh "The Quick Brown Fox" "[aeiou]"
 ```
 
 ## strip quotes
 ```sh
-sh /sdcard/usefulscripts/strip_quotes.sh ""sdfsdfsd'""
+sh /sdcard/useful/strip_quotes.sh ""sdfsdfsd'""
 ```
 
 ## split at delimiter
 ```sh
-sh /sdcard/usefulscripts/split_string_at.sh "baba,bddd,ba" ","
+sh /sdcard/useful/split_string_at.sh "baba,bddd,ba" ","
 ```
 
 ## trim string
 ```sh
-sh /sdcard/usefulscripts/trim_string.sh "bbdsa "
+sh /sdcard/useful/trim_string.sh "bbdsa "
 ```
 
 ## maketouch
 ```sh
-sh /sdcard/usefulscripts/make_touch.sh /sdcard/bibi/baba/sh
+sh /sdcard/useful/make_touch.sh /sdcard/bibi/baba/sh
 ```
 
 ## get display height/width
 ```sh
-read width height <<< $(sh /sdcard/usefulscripts/getwidthheight.sh)
+read width height <<< $(sh /sdcard/useful/getwidthheight.sh)
 ```
 
 
@@ -446,23 +1068,23 @@ read width height <<< $(sh /sdcard/usefulscripts/getwidthheight.sh)
 ```sh
 if result > 0 -> working
 
-sh /sdcard/usefulscripts/internetconnectioncheck.sh
+sh /sdcard/useful/internetconnectioncheck.sh
 ```
 
 ## get random line from file
 ```sh
-sh /sdcard/usefulscripts/randomlinefromfile.sh /sdcard/u.txt
+sh /sdcard/useful/randomlinefromfile.sh /sdcard/u.txt
 ```
 
 ## get line from file (starting at 1)
 ```sh
-sh /sdcard/usefulscripts/get_line_from_file.sh 1 /sdcard/u.txt
+sh /sdcard/useful/get_line_from_file.sh 1 /sdcard/u.txt
 ```
 
 ## generate password
 ```sh
-sh /sdcard/usefulscripts/generatepassword.sh 16
-)H0HUt$S+4*&rOx*
+sh /sdcard/useful/generatepassword.sh 16
+# )H0HUt$S+4*&rOx*
 ```
 
 ## check if keyboard shown
@@ -487,159 +1109,58 @@ firstnames_female="/sdcard/firstnames_female.txt"
 sh generateemail "$saveinfile" "$lastnames" "$firstnames_male" "$firstnames_female"
 ```
 
-## some pandas.Series like stuff 
-
-```sh
-awk -f /sdcard/awkseries/awkseries.awk -v column="text" -v newcolumn="text2" /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="text" -v newcolumn="is_empty" -v is_empty=1 /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="text" -v newcolumn="length" -v len=1 /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="centerx" -v newcolumn="centerx_lt" -v lt=1 -v value=700 /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="centerx" -v newcolumn="centerx_gt" -v gt=1 -v value=700 /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="centerx" -v newcolumn="centerx_ge" -v ge=1 -v value=700 /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="centerx" -v newcolumn="centerx_le" -v le=1 -v value=700 /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="centerx" -v newcolumn="centerx_eq" -v eq=1 -v value=700 /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="area" -v newcolumn="area_count" -v charcount=1 -v value="1" /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="area" -v newcolumn="area_count" -v charcount=1 -v value="0" /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-
-#returns index, 0 if not
-awk -f /sdcard/awkseries/awkseries.awk -v column="area" -v newcolumn="area_strcontains" -v strcontains=1 -v value="000" /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_sorted" -v sortletters=1 /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_replaced" -v strreplace=1 -v old=andro -v new=BUDU /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="area" -v newcolumn="area_abs" -v absolute=1 /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_leven" -v leven=1 -v str="android.view.View" /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_starts" -v strstartswith=1 -v value="android.view" /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_ends" -v strendswith=1 -v value="android.view" /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_rstrip" -v strrstrip=1 -v value="w" /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_lstrip" -v strlstrip=1 -v value="a" /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_spacestrip" -v spacestrip=1 /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_upper" -v strupper=1 /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-awk -f /sdcard/awkseries/awkseries.awk -v column="class" -v newcolumn="class_lower" -v strlower=1 /sdcard/u.txt > /sdcard/p.txt
-awk -f /sdcard/awkprint/awk_pretty_print.awk /sdcard/p.txt
-```
-
-## complete rgb screen dump 
-
-```sh
-# output to /sdcard/screencaprgbdata.txt (default)
-awk -f /sdcard/rgbinfos.awk
-# another output path
-awk -f /sdcard/rgbinfos.awk -v o="/sdcard/screencaprgbdata2.txt"
-# faster when adding screen width/height
-awk -f /sdcard/rgbinfos.awk -v o="/sdcard/screencaprgbdata2.txt" -v w=1600 -v h=900
-# passing already captured screendata
-screencap /sdcard/dumpd.tmp
-awk -f /sdcard/rgbinfos.awk -v screendump="/sdcard/dumpd.tmp" -v o="/sdcard/screencaprgbdata2.txt"
-awk -f /sdcard/rgbinfos.awk -v screendump="/sdcard/dumpd.tmp" -v o="/sdcard/screencaprgbdata2.txt" w=1600 h=900
-
-# $ tail /sdcard/screencaprgbdata2.txt
-1590,899,81,85,107
-1591,899,81,85,107
-1592,899,81,85,107
-1593,899,81,85,107
-1594,899,81,85,107
-1595,899,81,85,107
-1596,899,81,85,107
-1597,899,81,85,107
-1598,899,81,85,107
-1599,899,81,85,107
-```
-
-
-## more color stuff 
-```sh
-awk -f /sdcard/rgbinfos.awk -v o="/sdcard/baba.txt"
-awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6" -v print_colors=1 -v print_coords=1 -v action=print_data -v ors="\t" -v sep="#" "/sdcard/baba.txt"
-awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6" -v print_colors=1 -v print_coords=1 -v rgbcolor="4,8,37" -v action=search_color -v ors="\t" -v sep="#" "/sdcard/baba.txt"
-awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6" -v print_colors=0 -v print_coords=1 -v rgbcolor="4,8,37" -v action=search_color -v ors="\t" -v sep="#" "/sdcard/baba.txt"
-awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6" -v rgbcolor="129,131,145" -v action=count_color -v sep="#" "/sdcard/baba.txt"
-awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6#406,136,409,153#136,406,153,409" -v action=dominant_color -v sep="#" "/sdcard/baba.txt"
-awk -f /sdcard/rgbapply.awk -v areas="1,1,5,5#10,12,14,18#3,3,6,6" -v action=count_all_colors -v sep="#" "/sdcard/baba.txt"
-```
-
 ## analyze elements - find element changes 
 
 ```sh
-sh /sdcard/awkprint/getelementdifference.sh /sdcard/ele1.txt /sdcard/ele2.txt /sdcard/elediff2.txt /sdcard/activityparser/awkparser.sh
+# arguments: first capture / second capture / difference / parser 
+sh /sdcard/printer/getelementdifference.sh /sdcard/ele1.txt /sdcard/ele2.txt /sdcard/elediff2.txt /sdcard/fragmentparser/awkparser.sh
 cat /sdcard/elediff2.txt
 
-sh /sdcard/awkprint/getelementdifference.sh /sdcard/ele1.txt /sdcard/ele2.txt /sdcard/elediff3.txt /sdcard/uidumpparser/u.sh
+sh /sdcard/printer/getelementdifference.sh /sdcard/ele1.txt /sdcard/ele2.txt /sdcard/elediff3.txt sh /sdcard/elementparser/elementparser.sh
 cat /sdcard/elediff3.txt
-```
-
-## random - percentage 
-```sh
-# returns 60% 1, 40% 0
-sh /sdcard/usefulscripts/percentagedecide.sh 40
 ```
 
 ## random sleep
 ```sh
 # sleeps 10 times between 0.0 and 0.2 seconds
-sh /sdcard/usefulscripts/randomsleep.sh 10
+sh /sdcard/useful/randomsleep.sh 10
 ```
 
 ## check top activity 
 
 ```sh
-sh /sdcard/usefulscripts/topactivitycontains.sh instagram
+sh /sdcard/useful/topactivitycontains.sh instagram
 ```
 
 ## test keyevents 
 
 ```sh
 # return/y/Y == yes
-sh /sdcard/usefulscripts/testkeyevents.sh
+sh /sdcard/useful/testkeyevents.sh
 ```
 
-## awk get path of executed script 
+## template - awk get path of executed script 
 ```sh
-awk -f /sdcard/usefulscripts/templateawkgetownpath.awk
+awk -f /sdcard/useful/templateawkgetownpath.awk
 ```
 
-## better, faster colorstuff 
+## execute python scripts using termux 
+```python
+# copy to /sdcard/testpycommand.py
+from time import sleep
+i=0
+while True:
+    print (f"test {i}")
+    sleep(.1)
+    i+=1
+    if i>10:
+        break
+```
 
 ```sh
-# dump rgb data:
-sh /sdcard/fastrgbdump.sh -x0 183 -y0 1339 -x1 187 -y1 1343
+# execute in termux
+sh /sdcard/termuxstuff/termuxexe.sh --termux 1 --sleep 1 --split "#"
 
-# dump rgb data from region with already captured screen
-screencap >/sdcard/capscreen.tmp
-sh /sdcard/fastrgbdump.sh -f /sdcard/capscreen.tmp -x0 183 -y0 1339 -x1 187 -y1 1343
-
-# hexdump to a file
-sh /sdcard/fastrgbdump.sh --onlyhexdump 1 >/sdcard/hexdump.tmp
-sh /sdcard/fastrgbdump.sh -x /sdcard/hexdump.tmp -x0 183 -y0 1339 -x1 187 -y1 1343
-
-# count colors in region
-sh /sdcard/fastrgbdump.sh --colorcount 1 -x0 183 -y0 1339 -x1 187 -y1 1343
-
-# color at coordinate
-sh /sdcard/fastrgbdump.sh -x0 183 -y0 1339
-
-# search for colors in region
-sh /sdcard/fastrgbdump.sh --rgbcolors 24,24,24#29,180,82 -x0 183 -y0 1339 -x1 187 -y1 1343
-
-# check if colors are in region (returns 0 for true, 1 for false)
-sh /sdcard/fastrgbdump.sh --inregion 1 --rgbcolors 24,24,24#29,180,82 -x0 183 -y0 1339 -x1 187 -y1 1343
+# execute in the shell
+sh /sdcard/termuxstuff/termuxexe.sh --termux 0 --sleep 1 --split "#" --pythonscript testpycommand.py
 ```
