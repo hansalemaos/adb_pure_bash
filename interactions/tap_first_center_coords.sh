@@ -24,7 +24,13 @@ done
 if [ "$random" -eq 1 ]; then
     filelen=$(wc -l "$filename" | awk '{print $1}')
     filelen=$(($filelen - 1))
-    rnx=$(get_random_number_between 2 "$filelen")
+    
+    if [ "$filelen" -eq 2 ]; then 
+        rnx=2
+    else 
+        rnx=$(get_random_number_between 2 "$filelen")
+    fi 
+
 else
     rnx=2
 fi
