@@ -33,7 +33,7 @@ click_coords() {
     CENTERCLICKX=$(echo "$text" | awk '{print $1}')
     CENTERCLICKY=$(echo "$text" | awk '{print $2}')
 
-    if [[ "$CENTERCLICKX" -gt -1 && "$CENTERCLICKY" -gt -1 ]]; then
+    if [ "$CENTERCLICKX" != "" ] && [ "$CENTERCLICKY" != "" ]; then
         input tap "$CENTERCLICKX" "$CENTERCLICKY"
         return 0
     else
