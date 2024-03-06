@@ -1147,6 +1147,9 @@ awk -f /sdcard/useful/templateawkgetownpath.awk
 
 ## execute python scripts using termux 
 ```python
+# pkg install python
+# pkg up 
+# pkg rei libexpat
 # copy to /sdcard/testpycommand.py
 from time import sleep
 i=0
