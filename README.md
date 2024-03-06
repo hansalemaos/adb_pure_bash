@@ -1168,6 +1168,8 @@ sh /sdcard/termuxstuff/termuxexe.sh --termux 0 --sleep 1 --split "#" --pythonscr
 
 ## generate random data from input 
 ```sh
+# This AWK script processes input files, manipulates strings based on various parameters, and generates random output strings according to the provided criteria. The command line parameters allow for customization of the output generation process.
+
 # /sdcard/test1.txt 
 
 TESTFILE1 A1 
@@ -1193,6 +1195,20 @@ TESTFILE3 C5
 
 
 awk -f /sdcard/useful/generaterandomdata.awk -v total_output=20 -v percent_space_replace=30 -v space_replace="HHHH" -v outputseps="X#Q#P" -v percent_accents=100 -v percent_number=54 -v random_number_start=10000 -v random_number_end=20000  -v percent_low=20 -v percent_up=30 -v percent_camel=20 -v sep="#" -v files=/sdcard/test1.txt#/sdcard/test2.txt#/sdcard/test3.txt
+
+-v total_output=20: Sets the total number of output strings to generate.
+-v percent_space_replace=30: Sets the percentage of output strings that will have space replaced.
+-v space_replace="HHHH": Sets the replacement string for spaces.
+-v outputseps="X#Q#P": Sets the possible output separators for concatenating strings.
+-v percent_accents=100: Sets the percentage of output strings that will have accents removed.
+-v percent_number=54: Sets the percentage of output strings that will have a random number added.
+-v random_number_start=10000: Sets the start value for the random number to add.
+-v random_number_end=20000: Sets the end value for the random number to add.
+-v percent_low=20: Sets the percentage of output strings that will be converted to lowercase.
+-v percent_up=30: Sets the percentage of output strings that will be converted to uppercase.
+-v percent_camel=20: Sets the percentage of output strings that will be converted to camel case.
+-v sep="#": Sets the separator used in the input files.
+-v files=/sdcard/test1.txt#/sdcard/test2.txt#/sdcard/test3.txt: Sets the input files to read data from.
 
 TESTFILE1 A2XTESTFILE2 B2AXXTESTFILE3 C4
 testfile1 a3xtestfile2 b1axxtestfile3 c1X14804

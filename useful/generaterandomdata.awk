@@ -104,10 +104,7 @@ function random_item(arr) {
     }
     return arr[rand_index]
 }
-# awk -f /sdcard/useful/generaterandomdata.awk -v total_output=20 -v percent_space_replace=30 -v space_replace="HHHH" -v outputseps="X#Q#P" -v percent_accents=100 -v percent_number=54 -v random_number_start=10000 -v random_number_end=20000  -v percent_low=20 -v percent_up=30 -v percent_camel=20 -v sep="#" -v files=/sdcard/test1.txt#/sdcard/test2.txt#/sdcard/test3.txt
 BEGIN {
-    #srand();
-
     if (! ofs ){
         OFS="\t";
     }
