@@ -7,6 +7,8 @@ get_random_number_between() {
 }
 random=0
 filename=""
+offsetx=0
+offsety=0
 while [ $# -gt 0 ]; do
     case "$1" in
     -f | --filename)
@@ -17,6 +19,14 @@ while [ $# -gt 0 ]; do
         shift
         random=$1
         ;;
+    -x | --offsetx)
+        shift
+        offsetx=$1
+        ;;
+    -y | --offsety)
+        shift
+        offsety=$1
+        ;;                
     esac
     shift
 done
@@ -40,6 +50,8 @@ click_coords() {
     CENTERCLICKY=$(echo "$text" | awk '{print $2}')
 
     if [ "$CENTERCLICKX" != "" ] && [ "$CENTERCLICKY" != "" ]; then
+        CENTERCLICKX=$((CENTERCLICKX + $offsetx))
+        CENTERCLICKY=$((CENTERCLICKY + $offsety))
         input tap "$CENTERCLICKX" "$CENTERCLICKY"
         return 0
     else
@@ -48,6 +60,6 @@ click_coords() {
 }
 click_coords
 
-# sh /sdcard/interactions/tap_first_center_coords.sh --filename /sdcard/u.txt --random 1
+# sh /sdcard/interactions/tap_first_center_coords.sh --filename /sdcard/u.txt --random 1 --offsetx 0 --offsety 0
 # sh /sdcard/interactions/tap_first_center_coords.sh --filename /sdcard/u.txt
 

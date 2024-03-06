@@ -882,7 +882,8 @@ sh /sdcard/elementparser/elementparser.sh | awk -f /sdcard/series/seriesapply.aw
 sh /sdcard/interactions/tap_first_center_coords.sh --filename /sdcard/resultsquery.txt
 # click on a random element in the results 
 sh /sdcard/interactions/tap_first_center_coords.sh --filename /sdcard/resultsquery.txt --random 1
-
+# click with offset
+sh /sdcard/interactions/tap_first_center_coords.sh --filename /sdcard/resultsquery.txt --random 1 --offsetx 10 --offsety 10
 ```
 
 ## typing 
