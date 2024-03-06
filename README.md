@@ -1165,3 +1165,53 @@ sh /sdcard/termuxstuff/termuxexe.sh --termux 1 --sleep 1 --split "#"
 # execute in the shell
 sh /sdcard/termuxstuff/termuxexe.sh --termux 0 --sleep 1 --split "#" --pythonscript testpycommand.py
 ```
+
+## generate random data from input 
+```sh
+# /sdcard/test1.txt 
+
+TESTFILE1 A1 
+TESTFILE1 A2
+TESTFILE1 A3
+TESTFILE1 A4
+
+# /sdcard/test2.txt 
+
+TESTFILE2 B1áx
+TESTFILE2 B2áx
+TESTFILE2 B3áx
+TESTFILE2 B4áx
+
+
+# /sdcard/test3.txt 
+
+TESTFILE3 C1 
+TESTFILE3 C2
+TESTFILE3 C3
+TESTFILE3 C4
+TESTFILE3 C5
+
+
+awk -f /sdcard/useful/generaterandomdata.awk -v total_output=20 -v percent_space_replace=30 -v space_replace="HHHH" -v outputseps="X#Q#P" -v percent_accents=100 -v percent_number=54 -v random_number_start=10000 -v random_number_end=20000  -v percent_low=20 -v percent_up=30 -v percent_camel=20 -v sep="#" -v files=/sdcard/test1.txt#/sdcard/test2.txt#/sdcard/test3.txt
+
+TESTFILE1 A2XTESTFILE2 B2AXXTESTFILE3 C4
+testfile1 a3xtestfile2 b1axxtestfile3 c1X14804
+TESTFILE1 A3QTESTFILE2 B3axQTESTFILE3 C1
+Testfile1 a1qTestfile2 b3axqTestfile3 c3
+TESTFILE1 A1QTESTFILE2 B3axQTESTFILE3 C3
+testfile1HHHHa3qtestfile2HHHHb3axqtestfile3HHHHc4Q16220
+TESTFILE1 A2QTESTFILE2 B2AXQTESTFILE3 C2
+Testfile1HHHHa2qTestfile2HHHHb3axqTestfile3HHHHc4Q17140
+TESTFILE1 A1XTESTFILE2 B3axXTESTFILE3 C2X10061
+TESTFILE1 A3XTESTFILE2 B1AXXTESTFILE3 C2
+Testfile1 a3qTestfile2 b2axqTestfile3 c4
+TESTFILE1HHHHA2QTESTFILE2HHHHB3axQTESTFILE3HHHHC1
+TESTFILE1HHHHA3QTESTFILE2HHHHB2AXQTESTFILE3HHHHC1
+TESTFILE1 A1QTESTFILE2 B1axQTESTFILE3 C4Q14064
+TESTFILE1 A1XTESTFILE2 B2axXTESTFILE3 C1X10018
+Testfile1 a3xTestfile2 b1axxTestfile3 c2
+TESTFILE1HHHHA2XTESTFILE2HHHHB3AXXTESTFILE3HHHHC3X18502
+TESTFILE1 A1QTESTFILE2 B3AXQTESTFILE3 C1
+TESTFILE1 A3QTESTFILE2 B3AXQTESTFILE3 C1Q19706
+TESTFILE1HHHHA2XTESTFILE2HHHHB3axXTESTFILE3HHHHC4
+```
