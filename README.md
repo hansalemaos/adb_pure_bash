@@ -1231,3 +1231,8 @@ TESTFILE1 A1QTESTFILE2 B3AXQTESTFILE3 C1
 TESTFILE1 A3QTESTFILE2 B3AXQTESTFILE3 C1Q19706
 TESTFILE1HHHHA2XTESTFILE2HHHHB3axXTESTFILE3HHHHC4
 ```
+
+## get n random lines from file 
+```sh
+sh /sdcard/useful/get_n_random_lines_from_file.sh /sdcard/test3.txt 10
+```
