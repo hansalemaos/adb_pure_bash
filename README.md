@@ -1242,7 +1242,7 @@ sh /sdcard/useful/get_n_random_lines_from_file.sh /sdcard/test3.txt 10
 
 ## copy files to device  (cygwin or msys64 needed)
 ```sh
-ls -ltrR | awk -v cmdfile="c:/outfile.bat" -v win=1 -v serial="127.0.0.1:5585" -v dst="/sdcard/" -v adbpath="C:/Program Files/BlueStacks_nxt/HD-Adb.exe" -f C:\copyfilestodevice.awk
+ls -ltrR | awk -v cmdfile="c:/outfile.bat" -v win=1 -v serial="127.0.0.1:5585" -v dst="/sdcard/" -v adbpath="C:/Program Files/BlueStacks_nxt/HD-Adb.exe" -f copyfilestodevice.awk
 c:/outfile.bat
 # cmdfile - specifies the output file where commands will be written.  (defaults to "")
 # win - specifies whether the host system is Windows or not. (defaults to 0)
