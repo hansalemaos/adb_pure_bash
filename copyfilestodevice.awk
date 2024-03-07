@@ -66,7 +66,7 @@ BEGIN{
             }
 
         }
-        pushfiles[finalpath]="\""adbpath"\" -s "serial" push \""finalpath"\" \""dstfolder"\"";
+        pushfiles[finalpath]="\""adbpath"\" -s "serial" push \""finalpath"\" \""dstfolder"/\"";
 
     }
 
