@@ -2,12 +2,11 @@
 SCRIPT=$(realpath "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 uielementparser="$SCRIPTPATH/elementparser.sh"
-jdata="/sdcard/jdata.txt"
+#jdata="/sdcard/jdata.txt"
 
 get_joinedframe() {
-    rm -f "$jdata"
     parsedfiles2="$(cat "$uielementparser" | sh | tail -n+2)"
-    parsedfiles="$(echo -e -n "$parsedfiles2" | sed -E 's/\t/\tUXUAXSBDB/g'  | sed -E 's/UXUAXSBDB//' )"
+    parsedfiles="$(echo -e -n "$parsedfiles2" | sed -E 's/\t/\tUXUAXSBDB/g' | sed -E 's/UXUAXSBDB//')"
     lastlinenumber="$(echo -e -n "$parsedfiles" | tac | grep -niE -m1 '^[[:space:]]*1[[:space:]]+0[[:space:]]+' | awk 'BEGIN{FS=":";}{print $1}')"
     lastlinenumber=$((lastlinenumber + 1))
     lastlines=$(echo -e -n "$parsedfiles" | tail -n "$lastlinenumber")
@@ -15,14 +14,14 @@ get_joinedframe() {
 
     loopvar=$(echo -e -n "$filedata" | wc -l | awk '{print $1}')
     i=0
-    printf "%s\t"  "text" "resource-id" "class" "package" "content-desc" "checkable" "checked" "clickable" "enabled" "focusable" "focused" "scrollable" "long-clickable" "password" "selected" "startx" "endx" "starty" "endy" "centerx" "centery" "area" "width" >"$jdata"
-    echo >> "$jdata"
+    printf "%s\t" "text" "resource-id" "class" "package" "content-desc" "checkable" "checked" "clickable" "enabled" "focusable" "focused" "scrollable" "long-clickable" "password" "selected" "startx" "endx" "starty" "endy" "centerx" "centery" "area" "width"
+    echo
 
     while [ "$i" -lt "$loopvar" ]; do
         i=$((i + 1))
-        filedatax=$(echo -e -n "$filedata" | sed -n "$i"p | tr '\31' '\n' | sed -E 's/^[0-9]+\t[0-9]+\t/00000\t00000\t/g') 
+        filedatax=$(echo -e -n "$filedata" | sed -n "$i"p | tr '\31' '\n' | sed -E 's/^[0-9]+\t[0-9]+\t/00000\t00000\t/g')
         if [ -n "$filedatax" ]; then
-            echo "00000\t00000\t$filedatax" | sed -E 's/00000\t00000\t00000\t00000\t/00000\t00000\t/g'  | awk -v jdata="$jdata" 'function strip_spaces_both_sides(var) {
+            echo -e "00000\t00000\t$filedatax" | sed -E 's/00000\t00000\t00000\t00000\t/00000\t00000\t/g' | awk 'function strip_spaces_both_sides(var) {
     gsub(/^[[:space:]]+|[[:space:]]+$/, "", var)
 }
 BEGIN{FS="\t";
@@ -210,10 +209,9 @@ else{
 height_string=height_string"|NaN";}
 
 } 
-END {printf "%s\n",  text_string"\t"resource_id_string"\t"class_string"\t"package_string"\t"content_desc_string"\t"checkable_string"\t"checked_string"\t"clickable_string"\t"enabled_string"\t"focusable_string"\t"focused_string"\t"scrollable_string"\t"long_clickable_string"\t"password_string"\t"selected_string"\t"startx_string"\t"endx_string"\t"starty_string"\t"endy_string"\t"centerx_string"\t"centery_string"\t"area_string"\t"width_string"\t"height_string}' >>"$jdata"
+END {printf "%s\n",  text_string"\t"resource_id_string"\t"class_string"\t"package_string"\t"content_desc_string"\t"checkable_string"\t"checked_string"\t"clickable_string"\t"enabled_string"\t"focusable_string"\t"focused_string"\t"scrollable_string"\t"long_clickable_string"\t"password_string"\t"selected_string"\t"startx_string"\t"endx_string"\t"starty_string"\t"endy_string"\t"centerx_string"\t"centery_string"\t"area_string"\t"width_string"\t"height_string}' | sed -E 's/UXUAXSBDB//g'
 
         fi
     done
-    sed -E 's/UXUAXSBDB//g' "$jdata" 
 }
 get_joinedframe
